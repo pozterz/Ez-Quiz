@@ -14,6 +14,6 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'มีการพยายามเข้าถึงระบบเกินที่กำหนด กรุณาลองใหม่อีกครั้งใน :seconds วินาที.',
 
 ];

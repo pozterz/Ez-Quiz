@@ -1,16 +1,16 @@
-  @font-face {
+   @font-face {
  font-family: 'Prompt';
  font-style: normal;
  font-weight: 300;
  src: local('Prompt Light'), local('Prompt-Light'), url(http://localhost/webapp/public/Prompt.ttf) format('truetype');
-} 
+}  
 
-/*   @font-face {
+/* @font-face {
  font-family: 'Prompt';
  font-style: normal;
  font-weight: 300;
  src: local('Prompt Light'), local('Prompt-Light'), url(http://symple.world/ezquiz/public/Prompt.ttf) format('truetype');
-}   */
+} */
 
 html,body {
     background: #fff;
@@ -54,7 +54,7 @@ th:hover{
     max-height: 128px;
     border-radius: 50%;
 }
-button,select{
+button,select,input{
 	font-family: inherit;
 }
 

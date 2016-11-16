@@ -29,7 +29,7 @@
 																		<% quiz.subject.subject_number %> : <% quiz.subject.name %>
 																		<br/>
 																		<br/> เวลาสิ้นสุด :
-																		<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y' %>
+																		<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y HH:mm น.' %>
 																		<br/>
 																		<br/> ระดับ : <span class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></span>
 																</p>

@@ -102,7 +102,7 @@
 														<td><% $index+1 %></td>
 														<td><% subject.name  %></td>
 														<td><% subject.subject_number %></td>
-														<td><% panel.convertTime(subject.created_at) | date:'d MMMM y hh:mm น.' %></td>
+														<td><% panel.convertTime(subject.created_at) | date:'d MMMM y HH:mm น.' %></td>
 													</tr>
 												</tbody>
 											</table>
@@ -141,15 +141,75 @@
 				</div>
 				<!-- add quiz -->
 				<div class="tile is-parent" ng-show="panel.isSelected(3)">
-						<div class="tile is-child box">
-							<article class="media">
-								<div class="media-content">
-									<div class="content">
-										<input type="text" name="">
+					<div class="tile is-child box">
+						<div class="content">
+							<div class="control columns">
+								<div class="control column">
+									<input type="text" class="input" name="quiz-name" ng-model="quiz.name" placeholder="ชื่อแบบทดสอบ">
+								</div>
+								<div class="control column">
+									<span class="select">
+									  <select>
+									    <option ng-repeat="subject in datas"><% subject.name %></option>
+									  </select>
+									</span>
+								</div>
+								<div class="control column is-2">
+									<input type="number" class="input" min="1" max="6" name="quiz-name" placeholder="ระดับความยาก">
+								</div>
+							</div>
+							<div class="columns">
+								<div class="control column">
+									<p><label for="" class="label">วันที่เริ่มต้น</label></p>
+									<input type="date" class="input" name="quiz-name">
+								</div>
+								<div class="control column">
+									<p><label for="" class="label">เวลา</label></p>
+									<input type="time" class="input" name="quiz-name">
+								</div>
+								<div class="control column">
+									<p><label for="" class="label">วันที่สิ้นสุด</label></p>
+									<input type="date" class="input" name="quiz-name">
+								</div>
+								<div class="control column">
+									<p><label for="" class="label">เวลา</label></p>
+									<input type="time" class="input" name="quiz-name">
+								</div>
+							</div>
+							<div class="notification" ng-repeat="question in quiz.question">
+								<button class="delete" ng-click="panel.rmQuestion($index)"></button>
+								<div class="columns">
+									<div class="column is-10">
+										<div class="control">
+										<label class="label">ข้อที่ <span><% $index+1 %></span></label>
+										<input type="text" class="input" name="quiz-name" ng-model="question.ask" placeholder="คำถาม">
+										</div>
 									</div>
 								</div>
-							</article>
+								<div class="columns" ng-repeat="choice in question.choices">
+									<div class="column is-8">
+										<div class="control">
+										<input type="text" class="input" name="quiz-name" ng-model="choice.text"  placeholder="ตัวเลือก">
+										</div>
+									</div>
+									<div class="column is-2">
+										<p class="control">
+											<button type="button" class="button is-outlined" ng-click="panel.correctChoice($parent.$index,$index)" ng-class="{ 'is-success':choice.isCorrect }"><i class="fa fa-check"></i></button>
+											<button type="button" class="button is-danger is-outlined" ng-click="panel.rmChoice($parent.$index,$index)"><i class="fa fa-times"></i></button>
+									  </p>
+									</div>
+								</div>
+								<button type="button" class="button is-danger is-outlined" ng-click="panel.addChoice($index)"><i class="fa fa-plus"></i></button>
+							</div>
+							<div class="columns">
+								<div class="column">
+									<button type="button" class="button is-info is-outlined" ng-click="panel.addQuestion()">Add</button>
+									<button type="button" class="button is-success is-outlined is-pulled-right" ng-click="panel.addQuestion()">Confirm</button>
+								</div>
+							</div>
+
 						</div>
+					</div>
 				</div>
 				<!-- all quiz -->
 				<div class="tile is-parent" ng-show="panel.isSelected(4)">
@@ -196,7 +256,7 @@
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
-														<td><% panel.convertTime(quiz.end) | date:'d MMMM y hh:mm น.' %></td>
+														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
 														<td><% quiz.level  %></td>
 													</tr>
 												</tbody>
@@ -252,7 +312,7 @@
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
-														<td><% panel.convertTime(quiz.end) | date:'d MMMM y hh:mm น.' %></td>
+														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
 														<td><% quiz.level  %></td>
 													</tr>
 												</tbody>
@@ -308,7 +368,7 @@
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
-														<td><% panel.convertTime(quiz.end) | date:'d MMMM y hh:mm น.' %></td>
+														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
 														<td><% quiz.level  %></td>
 													</tr>
 												</tbody>
@@ -451,57 +511,112 @@
 					}
 
 					// Sort
-						$scope.now = new Date();
-						$scope.currentPage = 1;
-						$scope.pageSize = 10;
-						$scope.sort = 'end';
-						$scope.reverse = false;
+					$scope.now = new Date();
+					$scope.currentPage = 1;
+					$scope.pageSize = 10;
+					$scope.sort = 'end';
+					$scope.reverse = false;
 
-						this.sortBy = function(propertie)
-						{
-							$scope.reverse = ($scope.sort === propertie) ? !$scope.reverse : false;
-							$scope.sort = propertie;
-						}
+					this.sortBy = function(propertie)
+					{
+						$scope.reverse = ($scope.sort === propertie) ? !$scope.reverse : false;
+						$scope.sort = propertie;
+					}
 
-						this.convertTime = function(time)
-						{
-							var date = new Date(time);
-							return date;
-						}
-						// new stuff
-						$scope.stuffs = [];
+					this.convertTime = function(time)
+					{
+						var date = new Date(time);
+						return date;
+					}
+					
+					// new stuff & quiz
+					$scope.stuffs = [];
+
+					$scope.stuffs.push({
+						name: "",
+						subject_number: "",
+					})
+
+					this.addStuff = function()
+					{
 						$scope.stuffs.push({
-								name: "",
-								subject_number: "",
-							})
+							name: "",
+							subject_number: "",
+						})
+						//console.log($scope.stuffs);
+					}
 
-						this.addStuff = function(){
-							$scope.stuffs.push({
-								name: "",
-								subject_number: "",
-							})
-							//console.log($scope.stuffs);
-						}
+					this.rmStuff = function(index)
+					{
+						$scope.stuffs.splice(index,1);
+						//console.log(index);
+					}
 
-						this.rmStuff = function(index){
-							$scope.stuffs.splice(index,1);
-							//console.log(index);
-						}
-
-						$scope.notification = false;
-						this.confirmStuff = function(url){
-							for(i in $scope.stuffs){
-								if($scope.stuffs[i].name == '' && $scope.stuffs[i].subject_number == ''){
-									$scope.stuffs.splice(i,1);
-								}
+					$scope.notification = false;
+					this.confirmStuff = function(url)
+					{
+						for(i in $scope.stuffs){
+							if($scope.stuffs[i].name == '' && $scope.stuffs[i].subject_number == ''){
+								$scope.stuffs.splice(i,1);
 							}
-							this.postData(url,$scope.stuffs);
 						}
+						this.postData(url,$scope.stuffs);
+					}
 
-						$scope.subjectcount = {{ $subjectcount }};
+					$scope.subjectcount = {{ $subjectcount }};
 
+					$scope.quiz = [];
+					$scope.quiz.name = '';
+					$scope.quiz.question = [];
+					/*$scope.quiz.question.push({
+						name: "x",
+						subject_number: "x",
+					})*/
 
-					});
+					//console.log($scope.quiz);
+
+					this.addQuestion = function()
+					{
+						$scope.quiz.question.push({
+							ask: "",
+							answer: 0,
+							choices: [],
+						})
+						//console.log($scope.quiz);
+					}
+
+					this.rmQuestion = function(index)
+					{
+						$scope.quiz.question.splice(index,1);
+						//console.log(index);
+					}
+
+					this.addChoice = function(index)
+					{
+						$scope.quiz.question[index].choices.push({
+							text: "",
+							isCorrect: false,
+						})
+						//console.log($scope.quiz.question[index].choices);
+					}
+
+					this.rmChoice = function(parent,index)
+					{
+						$scope.quiz.question[parent].choices.splice(index,1);
+					}
+
+					this.correctChoice = function(parent,index)
+					{
+						for(i in $scope.quiz.question[parent].choices){
+							if(i != index)
+								$scope.quiz.question[parent].choices[i].isCorrect = false;
+						}
+						$scope.quiz.question[parent].choices[index].isCorrect = true;
+						$scope.quiz.question[parent].answer = index;
+						//console.log($scope.quiz.question[parent].answer);
+					}
+
+				});
 		})();
 
 </script>
