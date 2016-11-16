@@ -145,7 +145,7 @@
 							<article class="media">
 								<div class="media-content">
 									<div class="content">
-										<p>xxx</p>
+										<p>xx</p>
 									</div>
 								</div>
 							</article>
