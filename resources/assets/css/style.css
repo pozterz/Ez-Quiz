@@ -1,0 +1,79 @@
+  @font-face {
+ font-family: 'Prompt';
+ font-style: normal;
+ font-weight: 300;
+ src: local('Prompt Light'), local('Prompt-Light'), url(http://localhost/webapp/public/Prompt.ttf) format('truetype');
+} 
+
+/*   @font-face {
+ font-family: 'Prompt';
+ font-style: normal;
+ font-weight: 300;
+ src: local('Prompt Light'), local('Prompt-Light'), url(http://symple.world/ezquiz/public/Prompt.ttf) format('truetype');
+}   */
+
+html,body {
+    background: #fff;
+    height: 100%;
+    font-family: 'Prompt', sans-serif !important;
+}
+
+.is-teal {
+  background-color:#4db6ac;
+  color:#fff; 
+}
+.is-light-blue {
+  background-color:#64b5f6;
+  color:#fff; 
+}
+.is-green {
+  background-color:#81c784;
+  color:#fff; 
+}
+.is-amber {
+  background-color:#ffd54f;
+  color:#fff; 
+}
+.is-deep-orange {
+  background-color:#ff8a65;
+  color:#fff; 
+}
+.is-red {
+  background-color:#e57373 ;
+  color:#fff; 
+}
+
+.hero-edit {
+    padding-bottom: 100px !important;
+    padding-top: 70px !important;
+}
+th:hover{
+  cursor: pointer;
+}
+.img-circle {
+    max-height: 128px;
+    border-radius: 50%;
+}
+button,select{
+	font-family: inherit;
+}
+
+.hovereffect{ transition: all .2s ease-in-out; }
+.hovereffect:hover { transform: scale(1.05); } 
+.hovereffect a{ color:inherit; }
+
+
+@media screen and (max-width: 473px) {
+    table {width:100%;}
+    thead {display: none;}
+    tr:nth-of-type(2n) {background-color: inherit;}
+    tr td:first-child {background: #f0f0f0; font-weight:bold;font-size:1.3em;}
+    tbody td {display: block; text-align:center;}
+    tbody td:before { 
+        font-weight: bold;
+        content: attr(data-th); 
+        display: block;
+        text-align:center;  
+      }
+    }
+}
