@@ -613,7 +613,7 @@
 						}
 						$scope.quiz.question[parent].choices[index].isCorrect = true;
 						$scope.quiz.question[parent].answer = index;
-						//console.log($scope.quiz.question[parent].answer);
+						console.log($scope.quiz.question[parent].answer);
 					}
 
 				});
