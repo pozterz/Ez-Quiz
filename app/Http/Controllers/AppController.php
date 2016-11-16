@@ -18,10 +18,6 @@ class AppController extends Controller
     	return view('index');
     }
 
-    public function index2()
-    {
-      return view('index_box');
-    }
 
     /**
      * get all subjects
