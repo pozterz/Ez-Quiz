@@ -60,6 +60,7 @@ class AuthController extends Controller
             'name.min' => 'ชื่อ-นามสกุล ต้องกรอกอย่างน้อย 10 ตัวอักษร',
             'name.max' => 'ชื่อ-นามสกุล สามารถกรอกได้ทั้งหมด 100 ตัวอักษร',
             'email.max' => 'อีเมล์ สามารถกรอกได้ทั้งหมด 100 ตัวอักษร',
+            'email.unique' => 'email นี้มีผู้ใช้แล้ว',
             'password.min' => 'รหัสผ่าน จะต้องกรอกอย่างน้อย 6 ตัวอักษร',
             'password.max' => 'รหัสผ่าน จะสามารถกรอกได้ทั้งหมด 100 ตัวอักษร',
             'password.confirmed' => 'ยืนยันรหัสผ่านต้องตรงกับรหัสผ่าน',
@@ -72,7 +73,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'username' => 'required|min:6|max:30|unique:users',
             'name' => 'required|min:10|max:100',
-            'email' => 'required|email|max:100',
+            'email' => 'required|email|max:100|unique:users',
             'password' => 'required|different:username|confirmed|min:6|max:200',
             'type' => 'required|in:student,teacher',
             'student_id' => 'regex:/\d/|min:4|max:10|unique:users',

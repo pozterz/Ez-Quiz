@@ -30,7 +30,7 @@
 												</li>
 												<li>
 														<a href="#" ng-click="panel.selectTab(4);" ng-class="{ 'is-active':panel.isSelected(4) }">
-														<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด
+														<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด <span class="tag is-danger is-small" ng-bind="quizcount">{{$quizcount}}</span>
 														</a>
 														<ul>
 																<li>
@@ -83,8 +83,8 @@
 												</caption>
 												<thead>
 													<tr >
-														<th ng-click="panel.sortBy('id')">
-															# <i class="fa fa-sort" ng-show="sort === 'id'" ng-class="{reverse: reverse}"></i>
+														<th ng-click="panel.sortBy('$index')">
+															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
 														</th>
 														<th ng-click="panel.sortBy('name')">
 															ชื่อวิชา <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
@@ -127,8 +127,8 @@
 												<button type="button" class="button is-danger is-outlined" ng-click="panel.rmStuff($index)"><i class="fa fa-times"></i></button>
 											</div>
 									</div>
-									<button type="button" class="button is-info is-outlined" ng-click="panel.addStuff()">Add</button>
-									<button type="button" class="button is-success is-outlined" ng-click="panel.confirmStuff('newSubject');">Confirm</button>
+									<button type="button" class="button is-info is-outlined" ng-click="panel.addStuff()">เพิ่มวิชา</button>
+									<button type="button" class="button is-success is-outlined" ng-click="panel.confirmStuff('newSubject');">ยืนยัน</button>
 									<br/><br/>
 									<div class="notification is-primary" ng-show="notification" ng-if="post_datas.length">
 										 <button class="delete" ng-click="notification = false"></button>
@@ -142,38 +142,51 @@
 				<!-- add quiz -->
 				<div class="tile is-parent" ng-show="panel.isSelected(3)">
 					<div class="tile is-child box">
-						<div class="content">
-							<div class="control columns">
+						<div class="columns">
 								<div class="control column">
-									<input type="text" class="input" name="quiz-name" ng-model="quiz.name" placeholder="ชื่อแบบทดสอบ">
+									<div class="notification is-danger" ng-show="!datas.length">ไม่พบวิชาของคุณ กรุณาสร้างวิชาก่อนที่จะเพิ่มแบบทดสอบ</div>
+								</div>
+							</div>
+						<div class="content" ng-show="datas.length">
+							<div class="columns">
+								<div class="control column">
+									<div class="notification is-danger" ng-show="errmsg"><% errmsg %></div>
+								</div>
+							</div>
+							<div class="columns">
+								<div class="control column">
+									<input type="text" class="input" name="name" ng-model="quiz.name" placeholder="ชื่อแบบทดสอบ">
 								</div>
 								<div class="control column">
 									<span class="select">
-									  <select>
-									    <option ng-repeat="subject in datas"><% subject.name %></option>
+									  <select  ng-model="quiz.subject_id">
+									    <option ng-repeat="subject in datas" value="<% subject.id %>"><% subject.name %></option>
 									  </select>
 									</span>
 								</div>
-								<div class="control column is-2">
-									<input type="number" class="input" min="1" max="6" name="quiz-name" placeholder="ระดับความยาก">
+								<div class="column is-2">
+									<p class="control has-icon has-icon-right">
+										<input type="number" class="input" min="1" max="6" name="level" ng-model="quiz.level" placeholder="ระดับความยาก">
+										<i class="fa fa-star"></i>
+									</p>
 								</div>
 							</div>
 							<div class="columns">
 								<div class="control column">
 									<p><label for="" class="label">วันที่เริ่มต้น</label></p>
-									<input type="date" class="input" name="quiz-name">
+									<input type="date" class="input" name="start" ng-model="quiz.start">
 								</div>
 								<div class="control column">
 									<p><label for="" class="label">เวลา</label></p>
-									<input type="time" class="input" name="quiz-name">
+									<input type="time" class="input" name="starttime" ng-model="quiz.starttime">
 								</div>
 								<div class="control column">
 									<p><label for="" class="label">วันที่สิ้นสุด</label></p>
-									<input type="date" class="input" name="quiz-name">
+									<input type="date" class="input" name="end" ng-model="quiz.end">
 								</div>
 								<div class="control column">
 									<p><label for="" class="label">เวลา</label></p>
-									<input type="time" class="input" name="quiz-name">
+									<input type="time" class="input" name="endtime" ng-model="quiz.endtime">
 								</div>
 							</div>
 							<div class="notification" ng-repeat="question in quiz.question">
@@ -182,14 +195,14 @@
 									<div class="column is-10">
 										<div class="control">
 										<label class="label">ข้อที่ <span><% $index+1 %></span></label>
-										<input type="text" class="input" name="quiz-name" ng-model="question.ask" placeholder="คำถาม">
+										<input type="text" class="input" name="question" ng-model="question.ask" placeholder="คำถาม">
 										</div>
 									</div>
 								</div>
 								<div class="columns" ng-repeat="choice in question.choices">
 									<div class="column is-8">
 										<div class="control">
-										<input type="text" class="input" name="quiz-name" ng-model="choice.text"  placeholder="ตัวเลือก">
+										<input type="text" class="input" name="choice" ng-model="choice.text"  placeholder="ตัวเลือก">
 										</div>
 									</div>
 									<div class="column is-2">
@@ -199,15 +212,21 @@
 									  </p>
 									</div>
 								</div>
-								<button type="button" class="button is-danger is-outlined" ng-click="panel.addChoice($index)"><i class="fa fa-plus"></i></button>
+								<button type="button" class="button is-danger is-outlined" ng-click="panel.addChoice($index)"><i class="fa fa-plus"></i> &nbsp; เพิ่มตัวเลือก</button>
 							</div>
 							<div class="columns">
 								<div class="column">
-									<button type="button" class="button is-info is-outlined" ng-click="panel.addQuestion()">Add</button>
-									<button type="button" class="button is-success is-outlined is-pulled-right" ng-click="panel.addQuestion()">Confirm</button>
+									<button type="button" class="button is-info is-outlined" ng-click="panel.addQuestion()">เพิ่มคำถาม</button>
+									<button type="button" class="button is-success is-outlined is-pulled-right" ng-click="panel.confirmQuiz('newQuizzes')">ยืนยัน</button>
 								</div>
 							</div>
-
+							<br/><br/>
+								<div class="notification is-primary" ng-show="notification" ng-if="post_datas.length">
+									 <button class="delete" ng-click="notification = false"></button>
+									 <p ng-repeat="message in post_datas">
+									 	 <% message.message %>
+									 </p>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -234,8 +253,8 @@
 												</caption>
 												<thead>
 													<tr >
-														<th ng-click="panel.sortBy('id')">
-															# <i class="fa fa-sort" ng-show="sort === 'id'" ng-class="{reverse: reverse}"></i>
+														<th ng-click="panel.sortBy('$index')">
+															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
 														</th>
 														<th ng-click="panel.sortBy('name')">
 															ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
@@ -290,8 +309,8 @@
 												</caption>
 												<thead>
 													<tr >
-														<th ng-click="panel.sortBy('id')">
-															# <i class="fa fa-sort" ng-show="sort === 'id'" ng-class="{reverse: reverse}"></i>
+														<th ng-click="panel.sortBy('$index')">
+															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
 														</th>
 														<th ng-click="panel.sortBy('name')">
 															ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
@@ -346,8 +365,8 @@
 												</caption>
 												<thead>
 													<tr >
-														<th ng-click="panel.sortBy('id')">
-															# <i class="fa fa-sort" ng-show="sort === 'id'" ng-class="{reverse: reverse}"></i>
+														<th ng-click="panel.sortBy('$index')">
+															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
 														</th>
 														<th ng-click="panel.sortBy('name')">
 															ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
@@ -437,7 +456,7 @@
 				//
 				app.constant("CSRF_TOKEN", '{{ csrf_token() }}')
 
-				app.controller('PanelController',function($http,$scope, CSRF_TOKEN)
+				app.controller('PanelController',function($http,$scope,$window, CSRF_TOKEN)
 				{
 
 					this.selectTab = function(setTab)
@@ -468,10 +487,11 @@
 								{
 										$scope.datas = response.data.result;
 										$scope.loading = false;
-										console.log($scope.datas);
+										$scope.quiz.subject_id = $scope.datas[0].id;
+										//console.log($scope.datas);
 								});
 					}
-
+					
 					this.postData = function(url,data)
 					{
 						$http.post("{{ url('/Teacher') }}"+'/'+url,{data : data,csrf_token: CSRF_TOKEN})
@@ -479,7 +499,12 @@
 								{
 										$scope.post_datas = response.data.result;
 										$scope.notification = true;
-										console.log($scope.post_datas);
+										if($scope.post_datas[0].type == 'success'){
+											setTimeout(function(){
+												$window.location.reload();
+											}, 3000);
+										}
+										//console.log($scope.post_datas);
 								});
 					}
 
@@ -555,23 +580,30 @@
 					$scope.notification = false;
 					this.confirmStuff = function(url)
 					{
-						for(i in $scope.stuffs){
-							if($scope.stuffs[i].name == '' && $scope.stuffs[i].subject_number == ''){
-								$scope.stuffs.splice(i,1);
+						var tmp = [];
+						for(var i in $scope.stuffs){
+							if(($scope.stuffs[i].name.length > 0 && $scope.stuffs[i].subject_number.length > 0) && $scope.stuffs[i].name != '' && $scope.stuffs[i].subject_number.length != ''){
+								tmp.push($scope.stuffs[i]);
 							}
 						}
+						
+						$scope.stuffs = tmp;
+						//console.log($scope.stuffs);
 						this.postData(url,$scope.stuffs);
 					}
 
 					$scope.subjectcount = {{ $subjectcount }};
+					$scope.quizcount = {{ $quizcount }};
 
 					$scope.quiz = [];
 					$scope.quiz.name = '';
+					$scope.quiz.subject_id;
+					$scope.quiz.level = 1;
+					$scope.quiz.start = new Date();
+					$scope.quiz.starttime = new Date(1970, 0, 1, 0, 0, 0);;
+					$scope.quiz.end = new Date();
+					$scope.quiz.endtime = new Date(1970, 0, 1, 0, 0, 0);
 					$scope.quiz.question = [];
-					/*$scope.quiz.question.push({
-						name: "x",
-						subject_number: "x",
-					})*/
 
 					//console.log($scope.quiz);
 
@@ -579,7 +611,7 @@
 					{
 						$scope.quiz.question.push({
 							ask: "",
-							answer: 0,
+							answer: -1,
 							choices: [],
 						})
 						//console.log($scope.quiz);
@@ -613,7 +645,65 @@
 						}
 						$scope.quiz.question[parent].choices[index].isCorrect = true;
 						$scope.quiz.question[parent].answer = index;
-						console.log($scope.quiz.question[parent].answer);
+						//console.log($scope.quiz.question[parent].answer);
+					}
+
+					
+
+					this.confirmQuiz = function(url)
+					{
+						var $tmp = {};
+						$scope.errmsg = false;
+						
+						if($scope.quiz.name == '' || $scope.quiz.name.length == 0)
+							return $scope.errmsg = 'กรุณากรอกชื่อของแบบทดสอบ';
+						if($scope.quiz.question.length == 0)
+							return $scope.errmsg = 'กรุณาเพิ่มคำถาม';
+
+						$tmp.name = $scope.quiz.name;
+						$tmp.subject_id = $scope.quiz.subject_id;
+						$tmp.level = $scope.quiz.level;
+						$tmp.start = $scope.quiz.start;
+						$tmp.starttime = $scope.quiz.starttime;
+						$tmp.end = $scope.quiz.end;
+						$tmp.endtime = $scope.quiz.endtime;
+						$tmp.question = [];
+						for(i in $scope.quiz.question)
+						{
+							if($scope.quiz.question[i].ask == '' || $scope.quiz.question[i].ask == 0)
+								return $scope.errmsg = "กรุณากรอกคำถามให้ครบถ้วน";
+							if($scope.quiz.question[i].choices.length == 0)
+								return $scope.errmsg = "กรุณาเพิ่มตัวเลือกให้ครบถ้วน";
+							if($scope.quiz.question[i].answer == -1)
+								return $scope.errmsg = "กรุณาเลือกคำตอบที่ถูกต้องให้ครบถ้วน";
+
+							$tmp.question.push($scope.quiz.question[i]);
+							var new_choices = [];
+							//console.log($scope.quiz.question[i]);
+							//console.log($scope.quiz.question[i]);
+							for(j in $scope.quiz.question[i].choices)
+							{
+								if($scope.quiz.question[i].choices[j].text != '' || $scope.quiz.question[i].choices[j].length > 0){
+									new_choices.push($scope.quiz.question[i].choices[j]);
+								}
+								else if($scope.quiz.question[i].choices[j].isCorrect){
+									$tmp.question[i].answer = -1;
+									return $scope.errmsg = "กรุณาเลือกคำตอบที่ถูกต้อง";
+								}
+							}
+
+							$tmp.question[i].choices = new_choices;
+							//console.log($tmp);
+							for(j in $tmp.question[i].choices){
+								if($tmp.question[i].choices[j].isCorrect)
+									$tmp.question[i].answer = j;
+							}
+						}
+
+						$scope.quiz = $tmp;
+						//console.log($scope.quiz);
+					  this.postData(url,$scope.quiz);
+						
 					}
 
 				});

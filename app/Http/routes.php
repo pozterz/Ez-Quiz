@@ -46,6 +46,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/Teacher/addSubject', 'TeacherController@addSubject');
 	Route::post('/Teacher/newSubject', 'TeacherController@newSubject');
 	Route::get('/Teacher/getQuizzes', 'TeacherController@getQuizzes');
+	Route::post('/Teacher/newQuizzes', 'TeacherController@newQuizzes');
 	Route::get('/Teacher/getActiveQuizzes', 'TeacherController@getActiveQuizzes');
 	Route::get('/Teacher/getInActiveQuizzes', 'TeacherController@getInActiveQuizzes');
 
