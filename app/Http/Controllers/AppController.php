@@ -143,7 +143,7 @@ class AppController extends Controller
    	 * @return boolean [true if teacher, false if not teacher]
    	 */
    	private function isTeacher(){
-
+      return Auth::user()->type == 'teacher';
    	}
 
    	/**
@@ -151,6 +151,6 @@ class AppController extends Controller
    	 * @return boolean [true if student, false if not student]
    	 */
    	private function isStudent(){
-   		
+   		return Auth::user()->type == 'student';
    	}
 }
