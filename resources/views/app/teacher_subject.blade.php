@@ -145,7 +145,7 @@
 							<article class="media">
 								<div class="media-content">
 									<div class="content">
-										<p>xx</p>
+										<input type="text" name="">
 									</div>
 								</div>
 							</article>
@@ -428,7 +428,7 @@
 						switch(number){
 							case 1: return 'getSubjects'; break;
 							case 2: return 0; break;
-							case 3: return 0; break;
+							case 3: return 'getSubjects'; break;
 							case 4: return 'getQuizzes'; break;
 							case 5: return 'getActiveQuizzes'; break;
 							case 6: return 'getInActiveQuizzes'; break;
