@@ -9,6 +9,7 @@ use App\Quiz;
 use App\QuizAnswer;
 use App\Subject;
 use App\QuizQa;
+use App\Choice;
 use App\Http\Requests;
 
 class AppController extends Controller
@@ -18,7 +19,6 @@ class AppController extends Controller
     	return view('index');
     }
 
-
     /**
      * get all subjects
      * @return [json Array] [array(id,name,user_id,subject_number,timestamp)]
@@ -26,6 +26,9 @@ class AppController extends Controller
     public function getSubjects()
    	{
       $subjects = Subject::all();
+      foreach ($subjects as $key => $subject) {
+        $subject->User;
+      }
    		return response()
             ->json([
             	'result' => $subjects,
@@ -50,11 +53,16 @@ class AppController extends Controller
    	 * @param  [int] $subject_id [subject id]
    	 * @return [json Array]  [array(id,name,subject_id,level,start,end,timestamp)]
    	 */
-   	public function getSubjectQuiz($subject_id)
+   	public function getSubjectQuizzes($id)
    	{
+      $subject = Subject::findOrfail($id);
+      $quizzes = array();
+      $quizzes = $subject->Quiz()->get();
+      $subject->user->get();
    		return response()
             ->json([
-            	'result' => '',
+            	'result' => $quizzes,
+              'subject' => $subject,
             	]);
    	}
 
@@ -97,7 +105,7 @@ class AppController extends Controller
       $now = Carbon::now()->toDateTimeString();
       $quizzes = Quiz::where('end','>',$now)->orderBy('end','asc')->get();
       foreach ($quizzes as $key => $quiz) {
-        $quiz->Subject->get();
+        $quiz->Subject->User->get();
       }
       
       return response()

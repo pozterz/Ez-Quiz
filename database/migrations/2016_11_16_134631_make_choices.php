@@ -17,6 +17,7 @@ class MakeChoices extends Migration
             $table->integer('quiz_qas_id')->unsigned()->index();
             $table->enum('isCorrect',['true','false'])->default('false');
             $table->string('choice-text',100);
+            $table->timestamps();
         });
         Schema::table('choices',function(Blueprint $table){
             $table->foreign('quiz_qas_id')->references('id')->on('quiz_qas')->onDelete('cascade')->onUpdate('cascade');

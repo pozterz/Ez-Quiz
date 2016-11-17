@@ -195,10 +195,13 @@
 									<div class="column is-10">
 										<div class="control">
 										<label class="label">ข้อที่ <span><% $index+1 %></span></label>
+										<label class="label">คำถาม<span></span></label>
+										
 										<input type="text" class="input" name="question" ng-model="question.ask" placeholder="คำถาม">
 										</div>
 									</div>
 								</div>
+								<label class="label">ตัวเลือก<span></span></label>
 								<div class="columns" ng-repeat="choice in question.choices">
 									<div class="column is-8">
 										<div class="control">
@@ -208,7 +211,7 @@
 									<div class="column is-2">
 										<p class="control">
 											<button type="button" class="button is-outlined" ng-click="panel.correctChoice($parent.$index,$index)" ng-class="{ 'is-success':choice.isCorrect }"><i class="fa fa-check"></i></button>
-											<button type="button" class="button is-danger is-outlined" ng-click="panel.rmChoice($parent.$index,$index)"><i class="fa fa-times"></i></button>
+											<button type="button" class="button is-danger is-outlined" ng-click="panel.rmChoice($parent.$index,$index)"><i class="fa fa-times"></i> &nbsp; ลบ</button>
 									  </p>
 									</div>
 								</div>
@@ -441,7 +444,7 @@
 			      return {
 			        restrict: 'E',
 			        replace:true,
-			        template: '<div class="loading has-text-centered"><img src="{{url("/progress.gif")}}" width="30%" /></div>',
+			        template: '<div class="loading has-text-centered"><img src="{{url("/spinner.gif")}}" width="30%" /></div>',
 			        link: function (scope, element, attr) {
 			              scope.$watch('loading', function (val) {
 			                  if (val)

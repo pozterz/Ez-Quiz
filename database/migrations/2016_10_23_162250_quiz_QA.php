@@ -17,6 +17,7 @@ class QuizQA extends Migration
             $table->integer('quiz_id')->unsigned()->index();
             $table->string('question',500);
             $table->integer('duration');
+            $table->timestamps();
         });
 
         Schema::table('quiz_qas',function(Blueprint $table){

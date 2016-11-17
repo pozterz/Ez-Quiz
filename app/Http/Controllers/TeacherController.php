@@ -106,6 +106,47 @@ class TeacherController extends Controller
 							'result' => $quizzes,
 							]);
 	}
+	
+	public function getActiveQuizzes()
+	{
+		$subjects = Subject::where('user_id',Auth::user()->id)->get();
+		$quizzes = array();
+		$now = Carbon::now()->toDateTimeString();
+		foreach ($subjects as $key => $subject) {
+			$quizzx = $subject->Quiz()->get();
+			foreach ($quizzx as $key => $quiz) {
+				if($quiz->end > $now){
+					$quiz["subject"] = $quiz["subject"];
+					array_push($quizzes,$quiz);
+				}
+			}
+			
+		}
+		return response()
+						->json([
+							'result' => $quizzes,
+							]);
+	}
+	public function getInActiveQuizzes()
+	{
+		$subjects = Subject::where('user_id',Auth::user()->id)->get();
+		$quizzes = array();
+		$now = Carbon::now()->toDateTimeString();
+		foreach ($subjects as $key => $subject) {
+			$quizzx = $subject->Quiz()->get();
+			foreach ($quizzx as $key => $quiz) {
+				if($quiz->end < $now){
+					$quiz["subject"] = $quiz["subject"];
+					array_push($quizzes,$quiz);
+				}
+			}
+			
+		}
+		return response()
+						->json([
+							'result' => $quizzes,
+							]);
+	}
 
 	/**
      * add new subject
@@ -238,46 +279,7 @@ class TeacherController extends Controller
 							]);
   }
 
-	public function getActiveQuizzes()
-	{
-		$subjects = Subject::where('user_id',Auth::user()->id)->get();
-		$quizzes = array();
-		$now = Carbon::now()->toDateTimeString();
-		foreach ($subjects as $key => $subject) {
-			$quizzx = $subject->Quiz()->get();
-			foreach ($quizzx as $key => $quiz) {
-				if($quiz->end > $now){
-					$quiz["subject"] = $quiz["subject"];
-					array_push($quizzes,$quiz);
-				}
-			}
-			
-		}
-		return response()
-						->json([
-							'result' => $quizzes,
-							]);
-	}
-	public function getInActiveQuizzes()
-	{
-		$subjects = Subject::where('user_id',Auth::user()->id)->get();
-		$quizzes = array();
-		$now = Carbon::now()->toDateTimeString();
-		foreach ($subjects as $key => $subject) {
-			$quizzx = $subject->Quiz()->get();
-			foreach ($quizzx as $key => $quiz) {
-				if($quiz->end < $now){
-					$quiz["subject"] = $quiz["subject"];
-					array_push($quizzes,$quiz);
-				}
-			}
-			
-		}
-		return response()
-						->json([
-							'result' => $quizzes,
-							]);
-	}
+	
 
 	/******************* other function ******************/
 

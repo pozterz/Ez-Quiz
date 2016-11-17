@@ -1,20 +1,20 @@
-<nav class="pagination">
-<ul class="pagination" ng-if="1 < pages.length || !autoHide">
-    <li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
-        <a href="" ng-click="setCurrent(1)">&laquo;</a>
-    </li>
-    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
-        <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
-    </li>
-    <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
-        <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
-    </li>
-
-    <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
-        <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
-    </li>
-    <li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }">
-        <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
-    </li>
-</ul>
+<nav class="pagination" ng-if="1 < pages.length || !autoHide">
+    <a class="button" ng-if="boundaryLinks" ng-class="{ 'is-disabled' : pagination.current == 1 }" ng-click="setCurrent(1)">
+       First
+    </a>
+    <a class="button" ng-if="boundaryLinks" ng-class="{ 'is-disabled' : pagination.current == pagination.last }" ng-click="setCurrent(pagination.last)">
+       Last
+    </a>
+    <ul>
+        <li ng-if="directionLinks">
+            <a class="button" ng-class="{ 'is-disabled' : pagination.current == 1 }" ng-click="setCurrent(pagination.current - 1)">Previous</a>
+        </li>
+        <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{'is-disabled' : pageNumber == '...'}">
+            <a class="button" ng-class="{ 'is-primary' : pagination.current == pageNumber }" ng-click="setCurrent(pageNumber)">{{ pageNumber }}
+            </a>
+        </li>
+        <li ng-if="directionLinks">
+            <a class="button" ng-class="{ 'is-disabled' : pagination.current == pagination.last }" ng-click="setCurrent(pagination.current + 1)">Next</a>
+        </li>
+    </ul>
 </nav>

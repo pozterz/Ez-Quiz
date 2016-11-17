@@ -32,8 +32,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/index', 'AppController@index');
 	Route::get('/test', 'AppController@index2');
 	Route::get('/getSubjects', 'AppController@getSubjects');
-	Route::get('/getSubject/{$subject_id}', 'AppController@getSubject');
-	Route::get('/getSubjectQuiz/{$subject_id}', 'AppController@getSubjectQuiz');
+	Route::get('/getSubject/{subject_id}', 'AppController@getSubject');
+	Route::get('/getSubjectQuizzes/{id}', 'AppController@getSubjectQuizzes');
 	Route::get('/getQuizzes', 'AppController@getQuizzes');
 	Route::get('/getActiveQuizzes', 'AppController@getActiveQuizzes');
 	Route::get('/getInActiveQuizzes', 'AppController@getInActiveQuizzes');
@@ -52,6 +52,11 @@ Route::group(['middleware' => ['web']], function () {
 
 	// student route
 	Route::get('/Student/Subject','StudentController@Subject');
+	Route::get('/Student/getSubjects', 'StudentController@getSubjects');
+	Route::get('/Student/addSubject', 'StudentController@addSubject');
+	Route::post('/Student/registerSubject', 'StudentController@registerSubject');
+	Route::post('/Student/removeSubject', 'StudentController@removeSubject');
+	Route::get('/Student/getRegisteredSubjects', 'StudentController@getRegisteredSubjects');
 
 });
 

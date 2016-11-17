@@ -76,7 +76,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|different:username|confirmed|min:6|max:200',
             'type' => 'required|in:student,teacher',
-            'student_id' => 'regex:/\d/|min:4|max:10|unique:users',
+            'student_id' => 'regex:/\d/|min:4|max:10',
             'ip' => 'ip',
         ],$message);
     }
@@ -97,7 +97,7 @@ class AuthController extends Controller
         }
         if($request->get('type') == 'teacher')
         {
-            $request->replace(array('student_id' => ''));
+            $request->student_id = '';
         }
         $user = $this->create($request->all());
 

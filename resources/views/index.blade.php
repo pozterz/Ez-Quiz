@@ -3,7 +3,7 @@
 		<div class="columns">
 				<div class="column">
 						<p class="control has-icon has-icon-right is-pulled-right">
-								<input type="text" class="is-medium input is-info" ng-model="search" placeholder="Search">
+								<input type="text" class="is-medium input is-info" ng-model="search.name" placeholder="Search">
 								<i class="fa fa-search icon"></i>
 						</p>
 				</div>
@@ -26,7 +26,7 @@
 																		<% quiz.name %>
 																</p>
 																<p class="subtitle is-6">
-																		<% quiz.subject.subject_number %> : <% quiz.subject.name %>
+																		<% quiz.subject.subject_number %> : <% quiz.subject.name %> | โดย : <% quiz.subject.user.name %>
 																		<br/>
 																		<br/> เวลาสิ้นสุด :
 																		<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y HH:mm น.' %>
@@ -59,7 +59,7 @@
 					return {
 						restrict: 'E',
 						replace:true,
-						template: '<div class="loading has-text-centered"><img src="{{url("/progress.gif")}}" width="30%" /></div>',
+						template: '<div class="loading has-text-centered"><img src="{{url("/spinner.gif")}}" width="30%" /></div>',
 						link: function (scope, element, attr) {
 									scope.$watch('loading', function (val) {
 											if (val)
