@@ -18,7 +18,10 @@ class AppController extends Controller
       $quizzes = Quiz::all()->count();
       $subjects = Subject::all()->count();
       $users = User::all()->count();
-      $answer = QuizAnswer::all()->count();
+      $answer = 0;
+      foreach (Quiz::all() as $key => $quiz) {
+      	$answer += count($quiz->Answer);
+      }
     	return view('index',compact('quizzes','subjects','users','answer'));
     }
 
