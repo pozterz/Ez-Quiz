@@ -17,7 +17,22 @@ html,body {
     height: 100%;
     font-family: 'Prompt', sans-serif !important;
 }
+.fade{
+  transition:0.5s linear all;
+  opacity: 1;
+}
 
+.fade.ng-hide {
+  opacity:0;
+}
+
+.level:not(:last-child){
+  margin-bottom: 0px;
+}
+
+.table tbody tr:last-child td,.table tbody tr:last-child th{
+  border-bottom-width: 1px;
+}
 
 .is-teal {
   background-color:#4db6ac;

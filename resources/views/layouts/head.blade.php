@@ -27,9 +27,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/')}}{{ elixir('css/all.css') }}">
     <!-- JavaScripts -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="{{ url('js/angular.min.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ url('js/angular.min.js') }}" ></script>
+    <script src="https://code.angularjs.org/latest/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+    <script src="{{ url('js/HumanizeDuration.js') }}" ></script>
+    <script src="{{ url('js/angular-timer.min.js') }}" ></script>
     <script src="{{ url('js/angular-locale-th-th.min.js') }}"></script>
-    <script src="{{ url('js/dirPagination.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ url('js/dirPagination.js') }}" ></script>
     <script src="{{ url('/')}}{{ elixir('js/all.js')}}"></script>
 

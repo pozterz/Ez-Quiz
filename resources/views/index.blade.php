@@ -15,9 +15,27 @@
 				<div class="tile is-ancestor">
 						<div class="tile is-vertical is-12">
 								<loading></loading>
-								<div class="notification is-danger" ng-show="!quizzes.length && !loading">
+								<div class="notification fade is-danger" ng-show="!quizzes.length && !loading">
 									ไม่พบคำถามในฐานข้อมูล
 								</div>
+								<nav class="level">
+								  <div class="level-item has-text-centered">
+								    <p class="heading">ผู้ใช้</p>
+								    <p class="title">{{ $users }}</p>
+								  </div>
+								  <div class="level-item has-text-centered">
+								    <p class="heading">วิชา</p>
+								    <p class="title">{{ $subjects }}</p>
+								  </div>
+								  <div class="level-item has-text-centered">
+								    <p class="heading">แบบทดสอบ</p>
+								    <p class="title">{{ $quizzes }}</p>
+								  </div>
+								  <div class="level-item has-text-centered">
+								    <p class="heading">คำตอบ</p>
+								    <p class="title">{{ $answer }}</p>
+								  </div>
+								</nav><hr/>
 								<div id="quiz" class="tile" ng-repeat="quiz in quizzes" ng-if="$index % 3 == 0" ng-hide="loading">
 										<div class="tile is-parent" ng-repeat="quiz in quizzes.slice($index, ($index+3 > quizzes.length ? quizzes.length : $index+3)) | filter:search:strict">
 												<div class="tile is-child hovereffect">
@@ -25,14 +43,15 @@
 																<p class="title is-4 ">
 																		<% quiz.name %>
 																</p>
-																<p class="subtitle is-6">
-																		<% quiz.subject.subject_number %> : <% quiz.subject.name %> | โดย : <% quiz.subject.user.name %>
-																		<br/>
-																		<br/> เวลาสิ้นสุด :
-																		<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y HH:mm น.' %>
-																		<br/>
-																		<br/> ระดับ : <span class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></span>
-																</p>
+																
+																<ul>
+																	<li><% quiz.subject.subject_number %> : <% quiz.subject.name %></li>
+																	<li>โดย : <% quiz.subject.user.name %></li>
+																	<li>วันที่สิ้นสุด :
+																<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y HH:mm น.' %></li>
+																</ul>
+																	 
+																ระดับ : <span class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></span>
 																<p>
 																		@if(!Auth::guest() && Auth::user()->type == 'student')
 																		<a href="#" alt="ทำแบบทดสอบ"><i class="fa fa-edit icon is-medium"></i></a> @else
@@ -50,7 +69,7 @@
 <script>
 /* angularjs */
 (function() {
-		var app = angular.module('EzQuiz', ['ngLocale'], function($interpolateProvider) {
+		var app = angular.module('EzQuiz', ['ngAnimate','ngLocale'], function($interpolateProvider) {
 				$interpolateProvider.startSymbol('<%');
 				$interpolateProvider.endSymbol('%>');
 		});

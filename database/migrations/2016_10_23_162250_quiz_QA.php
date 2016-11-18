@@ -16,7 +16,6 @@ class QuizQA extends Migration
             $table->increments('id');
             $table->integer('quiz_id')->unsigned()->index();
             $table->string('question',500);
-            $table->integer('duration');
             $table->timestamps();
         });
 

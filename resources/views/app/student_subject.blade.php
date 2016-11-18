@@ -29,7 +29,7 @@
 									<a href="#">ไม่พบวิชาที่ลงทะเบียนไว้แล้ว</a>
 								</li>
 								<li ng-repeat="subject in subjects">
-									<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(3);"> <% subject.name %></a>
+									<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(3);"> <% subject.name  | limitTo: 25 %><%subject.name.length > 25 ? '...' : ''%></a>
 								</li>
 							</ul>
 						</li>
@@ -45,7 +45,7 @@
 						</li>
 						<li>
 							<a href="#" ng-click="panel.selectTab(5);" ng-class="{ 'is-active':panel.isSelected(5) }">
-							<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด <span class="tag is-danger is-small" ng-bind="quizcount"></span>
+							<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด <span class="tag is-danger is-small" ng-model="QuizCount"><% QuizCount %></span>
 							</a>
 							<ul>
 								<li>
@@ -66,39 +66,44 @@
 				<article class="media">
 					<div class="media-content">
 						<div class="content">
-							<loading></loading>
 							<div class="columns">
 								<div class="column">
 									<p class="control has-icon is-pulled-right">
-										<input type="text" name="search" class="input is-info is-outlined" ng-model="search.name">
+										<input type="text" name="search" class="input is-info is-outlined" ng-model="search.name" placeholder="ค้นหาวิชา">
 										<i class="fa fa-search"></i>
-									</p>
+									</p><br/>
 								</div>
 							</div>
-							<br/>
-							<div class="notification is-info" ng-show="notification" ng-if="post_datas.length">
+							<div class="notification fade" ng-show="notification" ng-class="(post_datas[0].type == 'success')?'is-success':'is-danger'">
 								<button class="delete" ng-click="notification = false"></button>
 									<p ng-repeat="message in post_datas">
 										<% message.message %>
 									</p>
 							</div>
+							<div class="notification is-danger" ng-show="!datas.length">
+								ไม่พบวิชาในฐานข้อมูล
+							</div>
 							<div class="columns">
 								<div class="column">
-						 			<div class="box" dir-paginate="subject in datas | filter:search:strict | itemsPerPage: pageSize" current-page="currentPage" >
+						 			<div class="box" dir-paginate="subject in datas | filter:search:strict | itemsPerPage: pageSize" current-page="currentPage" pagination-id="addSubject">
 						 				<h4>
 						 					<strong><% subject.subject_number %> : <% subject.name %></strong>
 						 				</h4>
 						 				<h6>
-						 					เจ้าของวิชา : <% subject.user.name %> 
+						 					<ul>
+						 						<li>เจ้าของวิชา : <% subject.user.name %></li>
+						 						<li>สร้างเมื่อ : <% panel.convertTime(subject.created_at) | date:'EEEEที่ d MMMM y HH:mm น.' %> </li>
+						 						<li>สมาชิกทั้งหมด : <% subject.member.length %> คน</li>
+						 					</ul>
 						 				</h6>
-						 				<button ng-if="!subject.isRegistered" ng-click="panel.addSubject(subject.id)" type="button" class="button is-success is-outlined"><i class="fa fa-plus"></i> &nbsp; ลงทะเบียน</button>
-						 				<button ng-if="subject.isRegistered" ng-click="panel.rmSubject(subject.id)" type="button" class="button is-danger is-outlined"><i class="fa fa-times"></i> &nbsp; ออกจากวิชานี้</button>
+						 				<button ng-if="!subject.isRegistered" ng-click="panel.addSubject(subject.id,'Student/getSubjects')" type="button" class="button is-success is-outlined"><i class="fa fa-plus"></i> &nbsp; ลงทะเบียน</button>
+						 				<button ng-if="subject.isRegistered" ng-click="panel.rmSubject(subject.id,'Student/getSubjects')" type="button" class="button is-danger is-outlined"><i class="fa fa-times"></i> &nbsp; ออกจากวิชานี้</button>
 						 			</div>
 						 		</div>
 						 </div>
 						</div>
 						<br/>
-						<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="../dirPagination.tpl.html"></dir-pagination-controls>
+						<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="../dirPagination.tpl.html" pagination-id="addSubject"></dir-pagination-controls>
 					</div>
 				</article>
 			</div>
@@ -109,11 +114,42 @@
 				<article class="media">
 					<div class="media-content">
 						<div class="content">
-							<loading></loading>
-						 <div class="box" ng-repeat="subject in subjects">
-						 	<% subject.name %>
+							<div class="columns" ng-show="subjects.length">
+								<div class="column">
+									<p class="control has-icon is-pulled-right">
+										<input type="text" name="search" class="input is-info is-outlined" ng-model="search.name" placeholder="ค้นหาวิชา">
+										<i class="fa fa-search"></i>
+									</p>
+								</div>
+							</div>
+							<div class="notification fade" ng-show="notification" ng-class="(post_datas[0].type == 'success')?'is-success':'is-danger'">
+								<button class="delete" ng-click="notification = false"></button>
+									<p ng-repeat="message in post_datas">
+										<% message.message %>
+									</p>
+							</div>
+							<div class="notification is-danger" ng-show="!datas.length && !loading">
+								ไม่พบวิชาที่ลงทะเบียนไว้แล้ว
+							</div>
+							<div class="columns">
+								<div class="column">
+						 			<div class="box" dir-paginate="subject in datas | filter:search:strict | itemsPerPage: pageSize" current-page="currentPage" pagination-id="RegistSubject">
+						 				<h4>
+						 					<strong><% subject.subject_number %> : <% subject.name %></strong>
+						 				</h4>
+						 				<h6>
+						 					<ul>
+						 						<li>เจ้าของวิชา : <% subject.user.name %></li>
+						 						<li>สมาชิกทั้งหมด : <% subject.member.length %> คน</li>
+						 					</ul>
+						 				</h6>
+						 				<button ng-click="panel.rmSubject(subject.id,'Student/getRegisteredSubjects')" type="button" class="button is-danger is-outlined"><i class="fa fa-times"></i> &nbsp; ออกจากวิชานี้</button>
+						 			</div>
+						 		</div>
 						 </div>
 						</div>
+						<br/>
+						<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="../dirPagination.tpl.html" pagination-id="RegistSubject"></dir-pagination-controls>
 					</div>
 				</article>
 			</div>
@@ -129,10 +165,18 @@
 								<h4><% subject.subject_number %> : <% subject.name %></h4>
 								<h6>เจ้าของวิชา : <% subject.user.name %> </h6>
 							</p>
+							<div class="columns" ng-show="subjectquiz.length">
+								<div class="column is-5">
+									<p class="control has-icon">
+										<input type="text" class="input is-outlined is-info" ng-model="searchquiz.name" placeholder="ค้นหาแบบทดสอบ"><br/>
+										<i class="fa fa-search"></i>
+									</p>
+								</div>
+							</div>
 							<div class="notification is-danger" ng-show="!subjectquiz.length">
 								ไม่พบแบบทดสอบของวิชานี้
 							</div>
-						 	<div class="box" ng-repeat="quiz in subjectquiz">
+						 	<div class="box" ng-repeat="quiz in subjectquiz | filter:searchquiz:strict">
 						 		<div class="columns">
 						 			<div class="column is-10">
 						 				<strong> <% quiz.name %> </strong>
@@ -140,13 +184,63 @@
 								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
 								 		</span>
 						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
-						 				 <br/>
 							 		</div>
 						 		</div>
 					 			<div class="columns">
 					 				<div class="column">
-								 			วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %> <br/>
-								 			วันที่สิ้นสุด : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %> 
+					 					<ul>
+					 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
+					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %> </li>
+					 					</ul>
+								 	</div>
+					 			</div>
+						 	</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+		<!-- all quiz -->
+		<div class="tile is-parent" ng-show="panel.isSelected(5)">
+			<div class="tile is-child box">
+				<article class="media">
+					<div class="media-content" ng-show="loading">
+						<loading></loading>
+					</div>
+					<div class="media-content" ng-show="!loading">
+						<div class="columns" ng-show="allQuizzes.length">
+							<div class="column is-5">
+								<p class="control has-icon">
+									<input type="text" class="input is-outlined is-info" ng-model="searchquiz.name" placeholder="ค้นหาแบบทดสอบ"><br/>
+									<i class="fa fa-search"></i>
+								</p>
+							</div>
+						</div>
+						<div class="notification is-danger" ng-show="!allQuizzes.length && !loading">
+								ไม่พบแบบทดสอบ
+						</div>
+						<div class="content" ng-repeat="subjects in allQuizzes">
+						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'end'">
+						 		<div class="columns">
+						 			<div class="column is-10">
+						 				<strong> <% quiz.name %> </strong>
+						 				<span class="tag is-info is-small">
+								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
+								 		</span>
+						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+							 		</div>
+						 		</div>
+					 			<div class="columns">
+					 				<div class="column">
+					 						<ul>
+						 						<li>วิชา : <% subjects.name %></li>
+						 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
+						 					</ul>
+						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>')}" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
+						 					</a>
 								 	</div>
 					 			</div>
 						 	</div>
@@ -163,7 +257,7 @@
 @section('js')
 <script>
 		(function(){
-				var app = angular.module('Student', ['ngLocale','angularUtils.directives.dirPagination'], function($interpolateProvider)
+				var app = angular.module('Student', ['timer','ngAnimate','ngLocale','angularUtils.directives.dirPagination'], function($interpolateProvider)
 					{
 							$interpolateProvider.startSymbol('<%');
 							$interpolateProvider.endSymbol('%>');
@@ -212,21 +306,34 @@
 						$scope.notification = false;
 						var name = this.tabName(setTab)
 						if(name){
-							this.getData(name);
-							this.getSubject();
-							//this.getSubjectCount();
+							getData(name);
+							getSubject();
+							getallQuizzes();
 						}
 						
 					};
 
 					$scope.subjects = [];
-					this.getSubject = function()
+					var getSubject = function()
 					{
 						$http.get("{{ url('/Student') }}"+'/getRegisteredSubjects')
 								.then(function(response)
 								{
+									$scope.subjects = [];
 									$scope.subjects = response.data.result;
 									//console.log($scope.subjects);
+								})
+					}
+
+					$scope.allQuizzes = [];
+					var getallQuizzes = function()
+					{
+						$http.get("{{ url('/Student') }}"+'/getRegisteredSubjectsQuizzes')
+								.then(function(response)
+								{
+									$scope.allQuizzes = response.data.result;
+									$scope.QuizCount = response.data.count;
+									//console.log($scope.allQuizzes);
 								})
 					}
 
@@ -238,20 +345,11 @@
 									$scope.subject = [];
 									$scope.subjectquiz = response.data.result;
 									$scope.subject = response.data.subject;
-									console.log($scope.subjectquiz);
+									//console.log($scope.subjectquiz);
 								})
 					}
 
-					this.getSubjectCount = function()
-					{
-						$http.get("{{ url('/Student') }}"+'/getSubjectCount')
-								.then(function(response)
-								{
-									$scope.subjectcount = response.data.result;
-								})
-					}
-
-					this.getData = function(url)
+					var getData = function(url)
 					{
 						$scope.loading = true;
 						$http.get("{{ url('/') }}"+'/'+url)
@@ -259,7 +357,7 @@
 								{
 										$scope.datas = response.data.result;
 										$scope.loading = false;
-										console.log($scope.datas);
+										//console.log($scope.datas);
 								});
 					}
 					
@@ -286,7 +384,7 @@
 					{
 						switch(number){
 							case 1: return 'Student/getSubjects'; break;
-							case 2: return 0; break;
+							case 2: return 'Student/getRegisteredSubjects'; break;
 							case 3: return 0; break;
 							case 4: return 'getQuizzes'; break;
 							case 5: return 'getActiveQuizzes'; break;
@@ -326,19 +424,38 @@
 					this.convertTime = function(time)
 					{
 						var date = new Date(time);
+						//console.log(time);
 						return date;
 					}
 					
-					this.addSubject = function(id){
+					this.addSubject = function(id,getApi){
 						var url = 'registerSubject';
-						this.postData(url,id,false);
-						this.selectTab(1);
+						$http.post("{{ url('/Student') }}"+'/'+url,{data : id,csrf_token: CSRF_TOKEN})
+								.then(function(response)
+								{
+										$scope.post_datas = response.data.result;
+										$scope.notification = true;
+								}).then(function(){
+										getData(getApi);
+										getSubject();
+										getallQuizzes();
+								});
+										
+						
 					}
 
-					this.rmSubject = function(id){
+					this.rmSubject = function(id,getApi){
 						var url = 'removeSubject';
-						this.postData(url,id,false);
-						this.selectTab(1);
+						$http.post("{{ url('/Student') }}"+'/'+url,{data : id,csrf_token: CSRF_TOKEN})
+								.then(function(response)
+								{
+										$scope.post_datas = response.data.result;
+										$scope.notification = true;
+								}).then(function(){
+										getData(getApi);
+										getSubject();
+										getallQuizzes();
+								});
 					}
 
 				});

@@ -37,4 +37,9 @@ class User extends Authenticatable
         return $this->BelongsToMany(Subject::class);
     }
 
+    public function Answer()
+    {
+        return $this->BelongsToMany(Quiz::class);
+    }
+
 }

@@ -14,7 +14,7 @@ class MakeChoices extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quiz_qas_id')->unsigned()->index();
+            $table->integer('quiz_qa_id')->unsigned()->index();
             $table->enum('isCorrect',['true','false'])->default('false');
             $table->string('choice-text',100);
             $table->timestamps();

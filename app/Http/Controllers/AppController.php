@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
 use App\Quiz;
-use App\QuizAnswer;
 use App\Subject;
 use App\QuizQa;
 use App\Choice;
@@ -16,7 +15,11 @@ class AppController extends Controller
 {
     public function index()
     {
-    	return view('index');
+      $quizzes = Quiz::all()->count();
+      $subjects = Subject::all()->count();
+      $users = User::all()->count();
+      $answer = QuizAnswer::all()->count();
+    	return view('index',compact('quizzes','subjects','users','answer'));
     }
 
     /**
@@ -136,11 +139,36 @@ class AppController extends Controller
    	 * @param  [int] $quiz_id [quiz id]
    	 * @return [json] [id,name,subject_id,level,start,end,timestamp]
    	 */
-   	public function getQuiz($quiz_id)
+   	public function getQuiz($id)
    	{
+      $result = array();
+      $message = array('type' => '','message' => '');
+
+      try{
+        $Quiz = Quiz::findOrfail($id);
+      }catch(ModelNotFoundException $ex) {
+        $message['type'] ='failed';
+        $message['message'] = "ไม่พบวิชานี้ในฐานข้อมูล";
+        array_push($result,$message);
+        return response()
+            ->json([
+              'result' => $result,
+              ]);
+      }
+      if(Carbon::now()->timestamp > strtotime($Quiz->end))
+      {
+        $errr = "แบบทดสอบนี้สิ้นสุดลงแล้ว";
+      }
+      
+      $Quiz->Subject;
+      foreach ($Quiz->QuizQa as $key => $question) {
+       $question->Choice;
+      }
+
+      array_push($result,$Quiz);
    		return response()
             ->json([
-            	'result' => '',
+            	'result' => $result,
             	]);
    	}
 

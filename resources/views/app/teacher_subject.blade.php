@@ -15,7 +15,7 @@
 												</li>
 												<li>
 													<a href="#" ng-click="panel.selectTab(1);" ng-class="{ 'is-active':panel.isSelected(1) }">
-														<i class="icon is-small fa fa-clone"></i> วิชาทั้งหมด <span class="tag is-danger is-small" ng-bind="subjectcount">{{$subjectcount}}</span>
+														<i class="icon is-small fa fa-clone"></i> วิชาทั้งหมด <span class="tag is-danger is-small" ng-model="subjectcount"><%subjectcount%></span>
 													</a>
 												</li>
 										</ul>
@@ -30,7 +30,7 @@
 												</li>
 												<li>
 														<a href="#" ng-click="panel.selectTab(4);" ng-class="{ 'is-active':panel.isSelected(4) }">
-														<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด <span class="tag is-danger is-small" ng-bind="quizcount">{{$quizcount}}</span>
+														<i class="icon is-small fa fa-book"></i> แบบทดสอบทั้งหมด <span class="tag is-danger is-small" ng-model="quizcount">{{$quizcount}}</span>
 														</a>
 														<ul>
 																<li>
@@ -67,10 +67,10 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
 											ไม่พบวิชาของคุณในฐานข้อมูล
 										</div>
-										<div class="table" ng-hide="loading">
+										<div ng-hide="loading">
 											<table class="table" ng-show="datas.length" >
 												<caption>
 													<div class="column is-4 is-offset-8">
@@ -130,7 +130,7 @@
 									<button type="button" class="button is-info is-outlined" ng-click="panel.addStuff()">เพิ่มวิชา</button>
 									<button type="button" class="button is-success is-outlined" ng-click="panel.confirmStuff('newSubject');">ยืนยัน</button>
 									<br/><br/>
-									<div class="notification is-primary" ng-show="notification" ng-if="post_datas.length">
+									<div class="notification fade is-primary" ng-show="notification" ng-if="post_datas.length">
 										 <button class="delete" ng-click="notification = false"></button>
 										 <p ng-repeat="message in post_datas">
 										 	 <% message.message %>
@@ -144,23 +144,29 @@
 					<div class="tile is-child box">
 						<div class="columns">
 								<div class="control column">
-									<div class="notification is-danger" ng-show="!datas.length">ไม่พบวิชาของคุณ กรุณาสร้างวิชาก่อนที่จะเพิ่มแบบทดสอบ</div>
+									<div class="notification fade is-danger" ng-show="!datas.length">ไม่พบวิชาของคุณ กรุณาสร้างวิชาก่อนที่จะเพิ่มแบบทดสอบ</div>
 								</div>
 							</div>
 						<div class="content" ng-show="datas.length">
 							<div class="columns">
 								<div class="control column">
-									<div class="notification is-danger" ng-show="errmsg"><% errmsg %></div>
+									<div class="notification fade is-danger" ng-show="errmsg"><% errmsg %></div>
 								</div>
 							</div>
 							<div class="columns">
 								<div class="control column">
 									<input type="text" class="input" name="name" ng-model="quiz.name" placeholder="ชื่อแบบทดสอบ">
 								</div>
+								<div class="control column is-2">
+									<p class="control has-icon has-icon-right">
+										<input type="number" class="input" min="1" max="60" name="time" ng-model="quiz.time" placeholder="ระดับความยาก">
+										<i class="fa fa-clock-o"></i>
+									</p>
+								</div>
 								<div class="control column">
 									<span class="select">
 									  <select  ng-model="quiz.subject_id">
-									    <option ng-repeat="subject in datas" value="<% subject.id %>"><% subject.name %></option>
+									    <option ng-repeat="subject in datas" value="<% subject.id %>"><% subject.name | limitTo: 17 %><%subject.name.length > 17 ? '...' : ''%></option>
 									  </select>
 									</span>
 								</div>
@@ -224,7 +230,7 @@
 								</div>
 							</div>
 							<br/><br/>
-								<div class="notification is-primary" ng-show="notification" ng-if="post_datas.length">
+								<div class="notification fade is-primary" ng-show="notification" ng-if="post_datas.length">
 									 <button class="delete" ng-click="notification = false"></button>
 									 <p ng-repeat="message in post_datas">
 									 	 <% message.message %>
@@ -240,7 +246,7 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
 											ไม่พบคำถามในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
@@ -296,7 +302,7 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
 											ไม่พบคำถามที่กำลังทำงาน ในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
@@ -352,7 +358,7 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
 											ไม่พบคำถามที่สิ้นสุดการทำงานแล้ว ในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
@@ -433,7 +439,7 @@
 @section('js')
 <script>
 		(function(){
-				var app = angular.module('Teacher', ['ngLocale','angularUtils.directives.dirPagination'], function($interpolateProvider)
+				var app = angular.module('Teacher', ['ngAnimate','ngLocale','angularUtils.directives.dirPagination'], function($interpolateProvider)
 					{
 							$interpolateProvider.startSymbol('<%');
 							$interpolateProvider.endSymbol('%>');
@@ -473,7 +479,7 @@
 						}
 						
 					};
-					this.getSubjectCount = function()
+					var getSubjectCount = function()
 					{
 						$http.get("{{ url('/Teacher') }}"+'/getSubjectCount')
 								.then(function(response)
@@ -490,8 +496,11 @@
 								{
 										$scope.datas = response.data.result;
 										$scope.loading = false;
+
 										$scope.quiz.subject_id = $scope.datas[0].id;
 										//console.log($scope.datas);
+								}).then(function(){
+									getSubjectCount();
 								});
 					}
 					
@@ -502,12 +511,20 @@
 								{
 										$scope.post_datas = response.data.result;
 										$scope.notification = true;
-										if($scope.post_datas[0].type == 'success'){
+										var refresh = false;
+										for(i in $scope.post_datas){
+											if($scope.post_datas[i].type == 'success'){
+												refresh = true;
+											}
+										}
+										if(refresh){
 											setTimeout(function(){
 												$window.location.reload();
 											}, 3000);
 										}
 										//console.log($scope.post_datas);
+								}).then(function(){
+									getSubjectCount();
 								});
 					}
 
@@ -601,6 +618,7 @@
 					$scope.quiz = [];
 					$scope.quiz.name = '';
 					$scope.quiz.subject_id;
+					$scope.quiz.time = 1;
 					$scope.quiz.level = 1;
 					$scope.quiz.start = new Date();
 					$scope.quiz.starttime = new Date(1970, 0, 1, 0, 0, 0);;
@@ -665,6 +683,7 @@
 
 						$tmp.name = $scope.quiz.name;
 						$tmp.subject_id = $scope.quiz.subject_id;
+						$tmp.time = $scope.quiz.time;
 						$tmp.level = $scope.quiz.level;
 						$tmp.start = $scope.quiz.start;
 						$tmp.starttime = $scope.quiz.starttime;

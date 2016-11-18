@@ -7,7 +7,6 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use App\User;
 use App\Quiz;
-use App\QuizAnswer;
 use App\Subject;
 use App\QuizQa;
 use App\Choice;
@@ -52,17 +51,17 @@ class TeacherController extends Controller
     	$result = array();
     	$message = array('type' => '','message' => '');
       foreach ($request->get('data') as $key => $data) {
-      	$find = Subject::where('name',$data['name'])->where('user_id',Auth::user()->id)->where('subject_number',$data['subject_number'])->count();
+      	$find = Subject::where('name',trim($data['name']))->where('user_id',Auth::user()->id)->where('subject_number',trim($data['subject_number']))->count();
       	if(!$find){
 	      	$subject = new Subject;
-	      	$subject->name = $data["name"];
+	      	$subject->name = trim($data["name"]);
 	      	$subject->user_id = Auth::user()->id;
-	      	$subject->subject_number = $data["subject_number"];
+	      	$subject->subject_number = trim($data["subject_number"]);
 	      	$subject->save();
 	      	$message['type'] ='success';
 	      	$message['message'] = $data["subject_number"].' : '.$data["name"] .' : สำเร็จ';
       	}else{
-      		$message['type'] ='success';
+      		$message['type'] ='failed';
 	      	$message['message'] = $data["subject_number"].' : '.$data["name"] .' : มีวิชานี้อยู่ในระบบแล้ว';
       	}
       	array_push($result,$message);
@@ -240,9 +239,25 @@ class TeacherController extends Controller
 
     if(!$error){
     	// create Quiz
+    	// 
+    	if($quiz['time'] >= 60)
+    	{
+    		$hour = 1;
+    		$minute = 0;
+    	}else
+    	{
+    		$hour = 0;
+    		$minute = $quiz['time'];
+    	}
     	$newquiz = new Quiz;
     	$newquiz->name = $quiz['name'];
     	$newquiz->subject_id = $quiz['subject_id'];
+    	
+
+    	$newquiz->quiz_time = Carbon::parse(Carbon::now()->toDateTimeString())
+            ->startOfDay()
+            ->addHours($hour)
+            ->addMinutes($minute);
     	$newquiz->level = $quiz['level'];
     	$newquiz->start = $start;
     	$newquiz->end = $end;
@@ -255,7 +270,6 @@ class TeacherController extends Controller
 				$newquestion = new QuizQa;
 	    	$newquestion->quiz_id = $newquiz->id;
 	    	$newquestion->question = $question['ask'];
-	    	$newquestion->duration = 60;
 	    	$newquestion->save();
 
 	    	// create choice
@@ -296,6 +310,6 @@ class TeacherController extends Controller
             ->addMinutes($split[1])
             ->toDateTimeString();
         return $end_time;
-    }
+  }
 	
 }

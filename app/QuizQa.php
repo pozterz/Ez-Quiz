@@ -8,6 +8,6 @@ class QuizQa extends Model
 {
   public function Choice()
    {
-      return $this->hasMany(QuizQa::class);
+      return $this->hasMany(Choice::class);
    }
 }

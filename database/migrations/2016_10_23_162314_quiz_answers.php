@@ -12,15 +12,13 @@ class QuizAnswers extends Migration
      */
     public function up()
     {
-        Schema::create('quiz_answers', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('quiz_user', function (Blueprint $table) {
             $table->integer('quiz_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->integer('point')->unsigned();
-            $table->timestamps();
         });
 
-        Schema::table('quiz_answers',function(Blueprint $table){
+        Schema::table('quiz_user',function(Blueprint $table){
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users');
         });

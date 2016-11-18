@@ -8,7 +8,6 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use App\User;
 use App\Quiz;
-use App\QuizAnswer;
 use App\Subject;
 use App\QuizQa;
 use App\Choice;
@@ -101,7 +100,7 @@ class StudentController extends Controller
 			}
 			if($subject->Member->contains(Auth::user()->id)){
 				$subject->Member()->detach(Auth::user()->id);
-				$message['type'] ='success';
+				$message['type'] ='removed';
 	      $message['message'] = "ออกจากวิชา ". $subject->name . " สำเร็จ";
 			}else{
 				$message['type'] ='failed';
@@ -117,10 +116,65 @@ class StudentController extends Controller
     public function getRegisteredSubjects()
 		{
 			$subjects = User::find(Auth::user()->id)->Member()->get();
+			foreach ($subjects as $key => $subject) {
+				$subject->User;
+				$subject->Member;
+			}
 			return response()
 							->json([
 								'result' => $subjects,
 								]);
+		}
+
+		public function getRegisteredSubjectsQuizzes()
+		{
+			$registeredSubject = User::find(Auth::user()->id)->Member()->get();
+			$result = array();
+			$count = 0;
+			foreach ($registeredSubject as $key => $subject) {
+				$quiz = Subject::find($subject->id);
+				$count += $quiz->Quiz->count();
+				foreach ($quiz->Quiz as $key => $quizx) {
+					$quiz["quiz"] = $quizx->QuizQA;
+					foreach ($quiz["quiz"] as $key => $question) {
+						$quiz["quiz_q_a"] = $question->Choice;
+					}
+				};
+				
+				array_push($result,$quiz);
+			}
+			return response()
+							->json([
+								'result' => $result,
+								'count' => $count,
+								]);
+		}
+		public function answerQuiz($id){
+			$errr = false;
+
+			try{
+				$Quiz = Quiz::findOrfail($id);
+			}catch(ModelNotFoundException $ex) {
+	      $errr = "ไม่พบแบบทดสอบนี้ในฐานข้อมูล กรุณารีเฟรชแล้วลองใหม่อีกครั้ง";
+				return view('app.answer_quiz',compact('errr','id'));
+			}
+
+			if(Carbon::now()->timestamp > strtotime($Quiz->end))
+			{
+				$errr = "แบบทดสอบนี้สิ้นสุดลงแล้ว";
+			}
+
+			if($Quiz->Subject->Member->contains(Auth::user()->id))
+			{
+				$errr = "คุณไม่ได้ลงทะเบียนวิชานี้";
+			}
+			
+			if($Quiz->Answer->contains(Auth::user()->id))
+			{
+				$errr = "คุณได้ทำแบบทดสอบนี้ไปแล้ว";
+			}
+
+			return view('app.answer_quiz',compact('errr','id'));
 		}
 
 
