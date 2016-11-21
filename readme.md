@@ -1,27 +1,94 @@
-## Laravel PHP Framework
+# Ez - Quiz | Online quiz
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Ez - Quiz is a online quiz system for student and lecturer and its our group work in Web Engineering & Apllication course.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Ez -Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+# Member
 
-## Official Documentation
+|  ชือ   | รหัสนักศึกษา   	|    ตำแหน่ง   |
+|---	                         |---            |---            |
+|   นาย ธราเทพ หนูเหมือน        |   5635512083   |  Programmer   |
+|   นาย วรวิชญ์ มาแดง           |   5635512086    | Co-Programmer |
+|   นาย วัชรพงษ์ จุ้ยนคร          |    5635512089  | Tester          |
+|   นาย อลงกรณ์ สุวรรณจันทร์     |  5635512094     | Designer      |
+|   นางสาว วรรณวิมล สุรพันธ์      |  5635512097    | Designer      |
+|   นางสาว พิชชาพร สินธพานนท์  |    5635512107  |   Designer    |
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Contributing
+# Features
+  - Authentication & Authorization.
+  - Register subjects for student and do any quizzes in registered subjects.
+  - Create Subject for Lecturer and make quizzes.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+# ฟีเจอร์
+  - ระบบยืนยันตัวตนและตรวจสอบความเป็นเจ้าของ
+  - นักเรียนสามารถสมัครเข้ารายวิชาและสามารถทำควิซใด ๆ ได้ภายในวิชาที่ได้สมัครไว้แล้ว
+  - อาจารย์สามารถสร้างวิชา และสร้างแบบทดสอบได้.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Tech
 
-### License
+Ez - Quiz uses a number of open source projects to work properly:
+Ez - Quiz ใช้ open source project ในการทำงานร่วมกันดังนี้ :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+* [AngularJS] - HTML enhanced for web apps!
+* [bulma] - a modern CSS framework based on Flexbox.
+* [Gulp] - the streaming build system
+* [Laravel] - The PHP Framework For Web Artisans
+* [jQuery] - duh
+
+And of course Ez - Quiz itself is open source with a [public repository][ezquiz]
+ on GitHub.
+แน่นอนว่า Ez - Quiz เป็น open source เช่นกันที่ [public directory][ezquiz]
+ on GitHub. [
+
+### Installation
+
+Ez-Quiz requires [Laravel](https://laravel.com/docs/5.2/) v5.2+ to run.
+
+Install with composer.
+สามารถใช้ composer ในการติดตั้ง
+
+```sh
+$ composer install
+```
+
+For production environments...
+ตั้งค่า environment สำหรับ production
+
+> rename .env.example to .env and edit
+> เปลี่ยนชื่อไฟล์ .env.example เป็น .env และแก้ไข
+> .env will protected with .htaccess
+> .env จะถูกปกป้องด้วย .htaccess
+
+```sh
+APP_ENV=production
+APP_DEBUG=false
+DB_HOST=localhost
+DB_DATABASE= [YOUR Database name]
+DB_USERNAME= [YOUR Database password]
+DB_PASSWORD = [YOUR Database password]
+```
+
+deploy key & database
+การสร้างคีย์และตารางในฐานข้อมูล
+```sh
+php artisan key:generate
+php artisan migrate
+```
+
+
+   [ezquiz]: <https://github.com/joemccann/dillinger>
+   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
+   [Laravel]: <https://laravel.com/docs/5.2/>
+   [@thomasfuchs]: <http://twitter.com/thomasfuchs>
+   [Bulma]: <http://bulma.io/>
+   [jQuery]: <http://jquery.com>
+   [AngularJS]: <http://angularjs.org>
+   [Gulp]: <http://gulpjs.com>
+
+   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
+   [PlGh]:  <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
+   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
+   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
