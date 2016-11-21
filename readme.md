@@ -2,7 +2,7 @@
 
 Ez - Quiz is a online quiz system for student and lecturer and its our group work in Web Engineering & Apllication course.
 
-Ez -Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application.
+Ez - Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application.
 
 ### Member
 
