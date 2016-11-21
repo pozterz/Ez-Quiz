@@ -16,6 +16,7 @@ class QuizAnswers extends Migration
             $table->integer('quiz_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->integer('point')->unsigned();
+            $table->integer('spendtime')->unsigned();
         });
 
         Schema::table('quiz_user',function(Blueprint $table){

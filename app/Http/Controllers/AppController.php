@@ -9,6 +9,7 @@ use App\Quiz;
 use App\Subject;
 use App\QuizQa;
 use App\Choice;
+use Auth;
 use App\Http\Requests;
 
 class AppController extends Controller
@@ -111,7 +112,14 @@ class AppController extends Controller
       $now = Carbon::now()->toDateTimeString();
       $quizzes = Quiz::where('end','>',$now)->orderBy('end','asc')->get();
       foreach ($quizzes as $key => $quiz) {
+        if(!Auth::guest()){
+        	$quiz['isRegist'] = false;
+        	if($quiz->Subject->Member->contains(Auth::user()->id)){
+        		$quiz['isRegist'] = true;
+        	}
+        }
         $quiz->Subject->User->get();
+
       }
       
       return response()

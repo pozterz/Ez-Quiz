@@ -44,12 +44,14 @@
 										<h3>
 											คำถามที่ <% currentPage %> : <% Question.question %>
 										</h3>
-										<span ng-repeat="choice in Question.choice">
-											<label>
-												<input type="radio" >
-												<% choice.text %><br/>
+										<div style="padding-left: 40px;word-break: break-word;">
+										<div ng-repeat="choice in Question.choice" class="choices">
+											<input type="radio" id="radio-<%choice.id%>" name="ans" ng-click="answerQuiz.Answer(Question.id,choice.id)" ng-checked="answerQuiz.isChecked(currentPage-1,choice.id)">
+											<label for="radio-<%choice.id%>">
+												<span class="radio"><% choice.text %></span>
 											</label>
-										</span>
+										</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -135,6 +137,19 @@
       console.log('Timer Stopped - data = ', data);
     });
 
+    var answer = [];
+
+    this.Answer = function(question,ans){
+    	for(var i = 0; i < answer.length; i++){
+    		if(answer[i].quiz_id == question){
+    			answer[i].answer = ans;
+    			//return;
+    		}
+    	}
+    	
+    	console.log(answer);
+    }
+
 		var getData = function()
 		{
 			$scope.loading = true;
@@ -142,11 +157,19 @@
 					.then(function(response)
 					{
 						$scope.Questions = response.data.result;
+						for(var i = 0; i < $scope.Questions[0].quiz_qa.length; i++){
+							answer.push({
+				    		'quiz_id':$scope.Questions[0].quiz_qa[i].id,
+				    		'answer': -1,
+				    	});
+						}
 						$scope.loading = false;
-						console.log($scope.Questions);
+						console.log($scope.Questions[0]);
 					});
 		}
-
+		this.isChecked = function(index,choice){
+    		return answer[index].answer == choice;
+		}
 		this.convertTime = function(time)
 		{
 			var date = new Date(time);

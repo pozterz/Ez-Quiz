@@ -57,10 +57,19 @@
 																</ul>
 																	 
 																ระดับ : <span class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></span>
+																
 																<p>
+																	<br/>
 																		@if(!Auth::guest() && Auth::user()->type == 'student')
-																		<a href="#" alt="ทำแบบทดสอบ"><i class="fa fa-edit icon is-medium"></i></a> @else
-																		<a href="#" alt="ข้อมูลวิชา"><i class="fa fa-info-circle icon is-medium"></i></a> @endif
+																			<a class="button is-outlined" ng-class="QuizCtrl.diffcolor(quiz.level)" alt="ลงทะเบียน" ng-show="!quiz.isRegist" href="{{url('/Student/addSubject')}}">
+																				<i class="fa fa-plus fa-2x"></i> &nbsp; ลงทะเบียน
+																			</a> 
+																			<a class="button is-outlined"  ng-class="QuizCtrl.diffcolor(quiz.level)" alt="ทำแบบทดสอบ" ng-show="quiz.isRegist" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+																				<i class="fa fa-edit fa-2x"></i>  &nbsp; ทำแบบทดสอบ
+																			</a> 
+																		@else
+																			<a href="#" alt="ข้อมูลวิชา"><i class="fa fa-info-circle icon is-medium"></i></a>
+																		@endif
 																</p>
 														</article>
 												</div>
@@ -106,7 +115,6 @@
 						return input;
 				};
 		});
-
 		app.controller('QuizController', function($scope, $http) {
 
 				$scope.now = new Date();

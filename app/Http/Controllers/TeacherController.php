@@ -254,10 +254,7 @@ class TeacherController extends Controller
     	$newquiz->subject_id = $quiz['subject_id'];
     	
 
-    	$newquiz->quiz_time = Carbon::parse(Carbon::now()->toDateTimeString())
-            ->startOfDay()
-            ->addHours($hour)
-            ->addMinutes($minute);
+    	$newquiz->quiz_time = $quiz['time'];
     	$newquiz->level = $quiz['level'];
     	$newquiz->start = $start;
     	$newquiz->end = $end;
@@ -276,7 +273,7 @@ class TeacherController extends Controller
 	    	foreach ($question['choices'] as $key => $choice)
 	    	{
 					$newchoice = new Choice;
-					$newchoice->quiz_qas_id = $newquestion->id;
+					$newchoice->quiz_qa_id = $newquestion->id;
 					$newchoice->text = $choice['text'];
 					$newchoice->isCorrect = $choice['isCorrect'];
 					$newchoice->save();

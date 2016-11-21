@@ -179,7 +179,7 @@
 							<div class="notification is-danger" ng-show="!subjectquiz.length">
 								ไม่พบแบบทดสอบของวิชานี้
 							</div>
-						 	<div class="box" ng-repeat="quiz in subjectquiz | filter:searchquiz:strict">
+						 	<div class="box" ng-repeat="quiz in subjectquiz | filter:searchquiz:strict | orderBy:'-created_at'">
 						 		<div class="columns">
 						 			<div class="column is-10">
 						 				<strong> <% quiz.name %> </strong>
@@ -193,7 +193,7 @@
 					 				<div class="column">
 					 					<ul>
 					 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
-					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %> </li>
+					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %> </li>
 					 						<li>เวลา <% quiz.quiz_time %> นาที</li>
 					 					</ul>
 					 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>')}" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
@@ -227,7 +227,7 @@
 								ไม่พบแบบทดสอบ
 						</div>
 						<div class="content" ng-repeat="subjects in allQuizzes">
-						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'end'">
+						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'-created_at'">
 						 		<div class="columns">
 						 			<div class="column is-10">
 						 				<strong> <% quiz.name %> </strong>
@@ -447,8 +447,7 @@
 										getSubject();
 										getallQuizzes();
 								});
-										
-						
+														
 					}
 
 					this.rmSubject = function(id,getApi){
