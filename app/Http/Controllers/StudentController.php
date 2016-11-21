@@ -164,7 +164,7 @@ class StudentController extends Controller
 				$errr = "แบบทดสอบนี้สิ้นสุดลงแล้ว";
 			}
 
-			if($Quiz->Subject->Member->contains(Auth::user()->id))
+			if(!$Quiz->Subject->Member->contains(Auth::user()->id))
 			{
 				$errr = "คุณไม่ได้ลงทะเบียนวิชานี้";
 			}

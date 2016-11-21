@@ -49,6 +49,11 @@
 																	<li>โดย : <% quiz.subject.user.name %></li>
 																	<li>วันที่สิ้นสุด :
 																<% QuizCtrl.convertTime(quiz.end) | date:'EEEEที่ d MMMM y HH:mm น.' %></li>
+																	<li>
+																			<timer countdown="QuizCtrl.countd(quiz.end)"  max-time-unit="'day'" interval="1000">
+																				เหลือเวลา : <% days %> วัน, <%hours %> ชั่วโมง <% mminutes %> นาที <% sseconds %> วินาที
+																			</timer>
+																	</li>
 																</ul>
 																	 
 																ระดับ : <span class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></span>
@@ -69,7 +74,7 @@
 <script>
 /* angularjs */
 (function() {
-		var app = angular.module('EzQuiz', ['ngAnimate','ngLocale'], function($interpolateProvider) {
+		var app = angular.module('EzQuiz', ['timer','ngAnimate','ngLocale'], function($interpolateProvider) {
 				$interpolateProvider.startSymbol('<%');
 				$interpolateProvider.endSymbol('%>');
 		});
@@ -132,6 +137,12 @@
 				this.convertTime = function(time) {
 						var date = new Date(time);
 						return date;
+				}
+
+				this.countd = function(end){
+					var date = new Date();
+					var end = new Date(end);
+					return ((end.getTime() / 1000) - (date.getTime() / 1000));
 				}
 
 				this.getQuizzes = function() {
