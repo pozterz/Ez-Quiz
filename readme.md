@@ -69,7 +69,7 @@ APP_ENV=production
 APP_DEBUG=false
 DB_HOST=localhost
 DB_DATABASE= [YOUR Database name]
-DB_USERNAME= [YOUR Database password]
+DB_USERNAME= [YOUR Database username]
 DB_PASSWORD = [YOUR Database password]
 ```
 
