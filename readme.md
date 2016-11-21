@@ -81,16 +81,11 @@ php artisan migrate
 ```
 
 
-   [ezquiz]: <https://github.com/joemccann/dillinger>
-   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
+   [ezquiz]: <https://github.com/pozterz/Ez-Quiz>
+   [git-repo-url]: <https://github.com/pozterz/Ez-Quiz.git>
    [Laravel]: <https://laravel.com/docs/5.2/>
-   [@thomasfuchs]: <http://twitter.com/thomasfuchs>
    [Bulma]: <http://bulma.io/>
    [jQuery]: <http://jquery.com>
    [AngularJS]: <http://angularjs.org>
    [Gulp]: <http://gulpjs.com>
 
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]:  <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
