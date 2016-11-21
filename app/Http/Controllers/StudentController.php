@@ -119,6 +119,7 @@ class StudentController extends Controller
 			foreach ($subjects as $key => $subject) {
 				$subject->User;
 				$subject->Member;
+				$subject->Quiz;
 			}
 			return response()
 							->json([

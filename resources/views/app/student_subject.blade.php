@@ -29,7 +29,9 @@
 									<a href="#">ไม่พบวิชาที่ลงทะเบียนไว้แล้ว</a>
 								</li>
 								<li ng-repeat="subject in subjects">
-									<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(3);"> <% subject.name  | limitTo: 25 %><%subject.name.length > 25 ? '...' : ''%></a>
+									<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(3);"> <% subject.name  | limitTo: 25 %><%subject.name.length > 25 ? '...' : ''%>
+										<span class="tag is-light-blue is-small"  ng-model="subject.quiz.length"><% subject.quiz.length %></span>
+									</a>
 								</li>
 							</ul>
 						</li>
@@ -140,6 +142,7 @@
 						 				<h6>
 						 					<ul>
 						 						<li>เจ้าของวิชา : <% subject.user.name %></li>
+						 						<li>สร้างเมื่อ : <% panel.convertTime(subject.created_at) | date:'EEEEที่ d MMMM y HH:mm น.' %> </li>
 						 						<li>สมาชิกทั้งหมด : <% subject.member.length %> คน</li>
 						 					</ul>
 						 				</h6>
@@ -191,7 +194,11 @@
 					 					<ul>
 					 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
 					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %> </li>
+					 						<li>เวลา <% quiz.quiz_time %> นาที</li>
 					 					</ul>
+					 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>')}" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
+						 					</a>
 								 	</div>
 					 			</div>
 						 	</div>
