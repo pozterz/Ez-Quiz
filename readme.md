@@ -30,6 +30,7 @@ Ez -Quiz เป็นระบบทำควิซออนไลน์สำ�
 ### Tech
 
 Ez - Quiz uses a number of open source projects to work properly.
+
 Ez - Quiz ใช้ open source project ในการทำงานร่วมกันดังนี้.
 
 * [AngularJS] - HTML enhanced for web apps!
@@ -40,6 +41,7 @@ Ez - Quiz ใช้ open source project ในการทำงานร่ว�
 
 And of course Ez - Quiz itself is open source with a [public repository][ezquiz]
  on GitHub.
+ 
 แน่นอนว่า Ez - Quiz เป็น open source เช่นกันที่ [public directory][ezquiz]
  on GitHub.
 
