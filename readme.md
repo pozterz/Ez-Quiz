@@ -80,6 +80,10 @@ php artisan key:generate
 php artisan migrate
 ```
 
+### License
+
+The Ez-Quiz is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
 
    [ezquiz]: <https://github.com/pozterz/Ez-Quiz>
    [git-repo-url]: <https://github.com/pozterz/Ez-Quiz.git>
