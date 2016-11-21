@@ -2,7 +2,7 @@
 
 Ez - Quiz is a online quiz system for student and lecturer and its our group work in Web Engineering & Apllication course.
 
-Ez -Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application
+Ez -Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application.
 
 # Member
 
@@ -29,8 +29,8 @@ Ez -Quiz เป็นระบบทำควิซออนไลน์สำ�
 
 ### Tech
 
-Ez - Quiz uses a number of open source projects to work properly:
-Ez - Quiz ใช้ open source project ในการทำงานร่วมกันดังนี้ :
+Ez - Quiz uses a number of open source projects to work properly.
+Ez - Quiz ใช้ open source project ในการทำงานร่วมกันดังนี้.
 
 * [AngularJS] - HTML enhanced for web apps!
 * [bulma] - a modern CSS framework based on Flexbox.
@@ -41,26 +41,26 @@ Ez - Quiz ใช้ open source project ในการทำงานร่ว�
 And of course Ez - Quiz itself is open source with a [public repository][ezquiz]
  on GitHub.
 แน่นอนว่า Ez - Quiz เป็น open source เช่นกันที่ [public directory][ezquiz]
- on GitHub. [
+ on GitHub.
 
 ### Installation
 
 Ez-Quiz requires [Laravel](https://laravel.com/docs/5.2/) v5.2+ to run.
 
 Install with composer.
-สามารถใช้ composer ในการติดตั้ง
+สามารถใช้ composer ในการติดตั้ง.
 
 ```sh
 $ composer install
 ```
 
-For production environments...
-ตั้งค่า environment สำหรับ production
+For production environments.
+ตั้งค่า environment สำหรับ production.
 
-> rename .env.example to .env and edit
-> เปลี่ยนชื่อไฟล์ .env.example เป็น .env และแก้ไข
-> .env will protected with .htaccess
-> .env จะถูกปกป้องด้วย .htaccess
+> rename .env.example to .env and edit.
+> เปลี่ยนชื่อไฟล์ .env.example เป็น .env และแก้ไข.
+> .env will protected with .htaccess.
+> .env จะถูกปกป้องด้วย .htaccess.
 
 ```sh
 APP_ENV=production
@@ -71,8 +71,8 @@ DB_USERNAME= [YOUR Database password]
 DB_PASSWORD = [YOUR Database password]
 ```
 
-deploy key & database
-การสร้างคีย์และตารางในฐานข้อมูล
+deploy key & database.
+การสร้างคีย์และตารางในฐานข้อมูล.
 ```sh
 php artisan key:generate
 php artisan migrate
