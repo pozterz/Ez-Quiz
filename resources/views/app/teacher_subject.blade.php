@@ -253,7 +253,7 @@
 														<tr ng-repeat="quiz in subjectData[0].quiz | filter:search:strict | orderBy:sort:reverse">
 															<td><% $index+1 %></td>
 															<td><% quiz.name %></td>
-															<td><% quiz.quiz_time %></td>
+															<td><% quiz.quiz_time %> นาที</td>
 															<td><% quiz.quiz_qa.length %></td>
 															<td><% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></td>
 															<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
