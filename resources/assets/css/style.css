@@ -70,8 +70,13 @@ th:hover{
     max-height: 128px;
     border-radius: 50%;
 }
+
 button,select,input{
 	font-family: inherit;
+}
+
+a.button .is-outlined{
+  font-family: inherit;
 }
 
 .hovereffect{ transition: all .2s ease-in-out; }
