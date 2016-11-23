@@ -59,5 +59,6 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/Student/getRegisteredSubjects', 'StudentController@getRegisteredSubjects');
 	Route::get('/Student/getRegisteredSubjectsQuizzes', 'StudentController@getRegisteredSubjectsQuizzes');
 	Route::get('/Student/answerQuiz/{id}','StudentController@answerQuiz');
+	Route::post('/Student/sendAnswer', 'StudentController@sendAnswer');
 });
 

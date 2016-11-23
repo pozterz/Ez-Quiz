@@ -137,10 +137,13 @@ class StudentController extends Controller
 				$count += $quiz->Quiz->count();
 				foreach ($quiz->Quiz as $key => $quizx) {
 					$quiz["quiz"] = $quizx->QuizQA;
-					foreach ($quiz["quiz"] as $key => $question) {
+					$quizx["isAnswered"] = $quizx->Answer->contains(Auth::user()->id);
+					foreach ($quiz["quiz"] as $key => $question)
+					{
 						$quiz["quiz_q_a"] = $question->Choice;
 					}
-				};
+
+				}
 				
 				array_push($result,$quiz);
 			}
@@ -176,6 +179,68 @@ class StudentController extends Controller
 			}
 
 			return view('app.answer_quiz',compact('errr','id'));
+		}
+
+		public function sendAnswer(Request $request){
+			$data = $request->get('data');
+			$result = '';
+			$type = false;
+			try{
+				$quiz = Quiz::findOrfail($data["quiz_id"]);
+			}catch(ModelNotFoundException $ex) {
+	      $result = "ไม่พบแบบทดสอบนี้ในฐานข้อมูล กรุณารีเฟรชแล้วลองใหม่อีกครั้ง";
+				return response()
+            ->json([
+            	'result' => $result,
+							'type' => $type,
+            	]);
+			}
+
+			// check answered ?
+			if($quiz->Answer->contains(Auth::user()->id))
+			{
+				$result = 'คุณได้ทำแบบทดสอบนี้ไปแล้ว';
+			}
+			else{
+				// check answer
+				$points = 0;
+				foreach ($quiz->QuizQa as $key => $question) 
+				{
+					foreach ($data["data"] as $key => $answer) 
+					{
+						if($question->id == $answer["question_id"])
+						{
+							foreach ($question->Choice as $key => $choice) 
+							{
+								if($answer["answer"] == $choice->id)
+								{
+									if($choice->isCorrect)
+									{
+										$points += 1;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				$time = ($quiz->quiz_time*60)-($data["minutes"]*60+$data["seconds"]);
+				$quiz->Answer()->attach(Auth::user()->id,['point'=>$points,'spendtime'=>$time]);
+				$caled_result = array();
+				$caled_result["points"] = $points;
+				$caled_result["minutes"] = intval(floor($time/60));
+				$caled_result["seconds"] = $time%60;
+				$result = array();
+				array_push($result,$caled_result);
+				$type = true;
+			}
+
+			return response()
+							->json([
+            	'result' => $result,
+								'type' => $type,
+            	]);
 		}
 
 

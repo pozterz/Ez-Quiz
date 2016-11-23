@@ -10,7 +10,12 @@
 							<button type="button" class="delete"></button>
 							{{ $errr }}
 						</div>
-					@else
+						<div class="columns">
+							<div class="column has-text-centered">
+								<a href="{{url('index')}}" class="button is-danger is-outlined ">พาฉันกลับไป</a>
+							</div>
+						</div>
+						@else
 							<div class="media-content" ng-show="loading">
 								<loading></loading>
 							</div>
@@ -28,17 +33,24 @@
 				 						</li>
 				 						<li>เวลา : <% Questions[0].quiz_time %> นาที.</li>
 					 				</ul>
-									<button type="button" class="button is-info is-outlined" ng-class="{ 'is-disabled':start }" ng-click="start = 1; startTimer();">
-										<i class="fa fa-check"></i> &nbsp; เริ่มทำแบบทดสอบ
-									</button>
-									<span class="is-pulled-right">
-										<timer countdown="Questions[0].quiz_time*60" autostart="false" max-time-unit="'minute'" interval="1000">
-											<% mminutes %> นาที <% sseconds %> วินาที
-										</timer>
-									</span>
 								</div>
 							</div>
 							<div class="columns">
+								<div class="column">
+									<button type="button" class="button is-info is-outlined" ng-class="{ 'is-disabled':start }" ng-click="start = 1; startTimer();" ng-hide="result.length">
+										<i class="fa fa-check"></i> &nbsp; เริ่มทำแบบทดสอบ
+									</button>
+								</div>
+								<div class="column is-offset-4">
+									<span class="is-pulled-right">
+										<timer countdown="Questions[0].quiz_time*60" autostart="false" max-time-unit="'minute'" interval="1000" >
+											<h3><strong><% mminutes %> นาที <% sseconds %> วินาที</strong></h3>
+										</timer>
+									</span>
+									<br/>
+								</div>
+							</div>
+							<div class="columns" ng-show="!loading">
 								<div class="column">
 									<div class="notification" dir-paginate="Question in Questions[0].quiz_qa | filter:search:strict | itemsPerPage: pageSize" current-page="currentPage" pagination-id="AnswerQuiz" ng-show="start">
 										<h3>
@@ -55,16 +67,30 @@
 									</div>
 								</div>
 							</div>
+							<div class="columns" ng-show="!loading && result.result.length">
+								<div class="column has-text-centered">
+									<div class="content" style="font-size: 1.4em;">
+										<div class="notification is-success" ng-show="result.type">
+											คะแนนที่ได้ : <% result.result[0].points %> คะแนน.<br/>
+											เวลาที่ใช้ไป : <% result.result[0].minutes %> นาที <% result.result[0].seconds %> วินาที.
+										</div>
+										<div class="notification is-danger" ng-show="!result.type">
+											<% result.result %>
+										</div>
+										<a href="{{url('index')}}" class="button is-success is-outlined ">กลับหน้าแรก</a>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</article>
 				<br/>
 				<div class="columns" ng-show="!loading && start">
-						<dir-pagination-controls class="column" boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="{{ url('/dirPagination.tpl.html') }}" pagination-id="AnswerQuiz"></dir-pagination-controls>
+						<dir-pagination-controls class="column" boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="{{ url('/dirPaginationAnswer.tpl.html') }}" pagination-id="AnswerQuiz"></dir-pagination-controls>
 				</div>
 				<div class="columns is-mobile" ng-show="start">
 					<div class="column is-half is-offset-one-quarter has-text-centered">
-						<button type="button" class="button is-success is-outlined" ng-class="{ 'is-disabled':!start }" ng-click="start = 1; stopTimer();">
+						<button type="button" class="button is-success is-outlined" ng-class="{ 'is-disabled':!start }" ng-click="start = 1; sendAnswer();">
 							<i class="fa fa-check"></i> &nbsp; ส่งคำตอบ
 						</button>
 					</div>
@@ -128,27 +154,56 @@
       $scope.timerRunning = true;
     };
 
-    $scope.stopTimer = function (){
-        $scope.$broadcast('timer-stop');
-        $scope.timerRunning = false;
+    $scope.sendAnswer = function (){
+       $scope.$broadcast('timer-stop');
+       $scope.timerRunning = false;
     };
 
+    // time's up
     $scope.$on('timer-stopped', function (event, data){
-      console.log('Timer Stopped - data = ', data);
+    	if(data.minutes == 0 && data.seconds == 0 )
+    		sendData(data,true);
+    	else sendData(data,false);
     });
 
-    var answer = [];
+    var sendData = function(time,apply){
+    	$scope.loading = true;
+    	$scope.start = false;
+    	answer.minutes = time.minutes;
+			answer.seconds = time.seconds;
+    	console.log(answer);
+    	var url = "sendAnswer";
+    	$http.post("{{ url('/Student') }}"+'/'+url,{data : answer,csrf_token: CSRF_TOKEN})
+				.then(function(response)
+				{
+    				$scope.loading = false;
+						$scope.result = response.data;
+						console.log($scope.result);
+				});
+
+    	if(apply)
+    		return $scope.$apply();
+
+    	console.log(answer);
+    }
+
+    var answer = {};
+		answer.quiz_id = -1;
+		answer.minutes = 0;
+		answer.seconds = 0;
+		answer.data = [];
 
     this.Answer = function(question,ans){
-    	for(var i = 0; i < answer.length; i++){
-    		if(answer[i].quiz_id == question){
-    			answer[i].answer = ans;
-    			//return;
+    	for(var i = 0; i < answer.data.length; i++){
+    		if(answer.data[i].question_id == question){
+    			answer.data[i].answer = ans;
     		}
     	}
     	
-    	console.log(answer);
+    	//console.log(answer);
     }
+
+   
 
 		var getData = function()
 		{
@@ -157,18 +212,19 @@
 					.then(function(response)
 					{
 						$scope.Questions = response.data.result;
+						answer.quiz_id = $scope.Questions[0].id;
 						for(var i = 0; i < $scope.Questions[0].quiz_qa.length; i++){
-							answer.push({
-				    		'quiz_id':$scope.Questions[0].quiz_qa[i].id,
+							answer.data.push({
+				    		'question_id':$scope.Questions[0].quiz_qa[i].id,
 				    		'answer': -1,
 				    	});
 						}
 						$scope.loading = false;
-						console.log($scope.Questions[0]);
+						//console.log($scope.Questions[0]);
 					});
 		}
 		this.isChecked = function(index,choice){
-    		return answer[index].answer == choice;
+    		return answer.data[index].answer == choice;
 		}
 		this.convertTime = function(time)
 		{

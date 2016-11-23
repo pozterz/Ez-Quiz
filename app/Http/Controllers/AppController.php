@@ -49,9 +49,10 @@ class AppController extends Controller
    	 */
    	public function getSubject($subject_id)
    	{
+   		$subject = Subject::findOrfail($subject_id);
    		return response()
             ->json([
-            	'result' => '',
+            	'result' => $subject,
             	]);
    	}
 
@@ -65,6 +66,13 @@ class AppController extends Controller
       $subject = Subject::findOrfail($id);
       $quizzes = array();
       $quizzes = $subject->Quiz()->get();
+      foreach ($quizzes as $key => $quiz) {
+        if(!Auth::guest()){
+          $quiz["isAnswered"] = $quiz->Answer->contains(Auth::user()->id);
+        }else{
+           $quiz["isAnswered"] = false;
+        }
+      }
       $subject->user->get();
    		return response()
             ->json([

@@ -275,7 +275,7 @@ class TeacherController extends Controller
 					$newchoice = new Choice;
 					$newchoice->quiz_qa_id = $newquestion->id;
 					$newchoice->text = $choice['text'];
-					$newchoice->isCorrect = $choice['isCorrect'];
+					$newchoice->isCorrect = ($choice['isCorrect'])?'true':'false';
 					$newchoice->save();
 				}
     	}

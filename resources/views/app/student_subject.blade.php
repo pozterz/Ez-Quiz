@@ -71,11 +71,12 @@
 							<div class="columns">
 								<div class="column">
 									<p class="control has-icon is-pulled-right">
-										<input type="text" name="search" class="input is-info is-outlined" ng-model="search.name" placeholder="ค้นหาวิชา">
+										<input type="text" name="search" class="input is-info is-outlined" ng-model="search" placeholder="ค้นหาวิชา">
 										<i class="fa fa-search"></i>
-									</p><br/>
+									</p>
 								</div>
 							</div>
+							<br/>
 							<div class="notification fade" ng-show="notification" ng-class="(post_datas[0].type == 'success')?'is-success':'is-danger'">
 								<button class="delete" ng-click="notification = false"></button>
 									<p ng-repeat="message in post_datas">
@@ -87,7 +88,7 @@
 							</div>
 							<div class="columns">
 								<div class="column">
-						 			<div class="box" dir-paginate="subject in datas | filter:search:strict | itemsPerPage: pageSize" current-page="currentPage" pagination-id="addSubject">
+						 			<div class="box" dir-paginate="subject in datas | filter:search | itemsPerPage: pageSize" current-page="currentPage" pagination-id="addSubject">
 						 				<h4>
 						 					<strong><% subject.subject_number %> : <% subject.name %></strong>
 						 				</h4>
@@ -119,11 +120,12 @@
 							<div class="columns" ng-show="subjects.length">
 								<div class="column">
 									<p class="control has-icon is-pulled-right">
-										<input type="text" name="search" class="input is-info is-outlined" ng-model="search.name" placeholder="ค้นหาวิชา">
+										<input type="text" name="search" class="input is-info is-outlined" ng-model="search" placeholder="ค้นหาวิชา">
 										<i class="fa fa-search"></i>
 									</p>
 								</div>
 							</div>
+							<br/>
 							<div class="notification fade" ng-show="notification" ng-class="(post_datas[0].type == 'success')?'is-success':'is-danger'">
 								<button class="delete" ng-click="notification = false"></button>
 									<p ng-repeat="message in post_datas">
@@ -187,6 +189,7 @@
 								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
 								 		</span>
 						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+						 					<span class="tag is-small is-dark" ng-show="quiz.isAnswered">ทำแล้ว</span>
 							 		</div>
 						 		</div>
 					 			<div class="columns">
@@ -196,7 +199,7 @@
 					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %> </li>
 					 						<li>เวลา <% quiz.quiz_time %> นาที</li>
 					 					</ul>
-					 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>')}" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+					 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
 						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
 						 					</a>
 								 	</div>
@@ -235,6 +238,7 @@
 								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
 								 		</span>
 						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered">ทำแล้ว</span>
 							 		</div>
 						 		</div>
 					 			<div class="columns">
@@ -245,7 +249,7 @@
 						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
 						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
 						 					</ul>
-						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>')}" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
 						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
 						 					</a>
 								 	</div>
@@ -340,7 +344,7 @@
 								{
 									$scope.allQuizzes = response.data.result;
 									$scope.QuizCount = response.data.count;
-									//console.log($scope.allQuizzes);
+									console.log($scope.allQuizzes);
 								})
 					}
 
