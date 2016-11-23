@@ -217,44 +217,55 @@
 											</div>
 											<!-- quizzes menu -->
 											<div ng-show="panel.isMenuSelected(2)">
-											<table class="table">
-												<thead>
-													<tr >
-														<th ng-click="panel.sortBy('$index')">
-															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
-														</th>
-														<th ng-click="panel.sortBy('name')">
-															ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
-														</th>
-														<th ng-click="panel.sortBy('start')">
-															เวลาเริ่มต้น <i class="fa fa-sort" ng-show="sort === 'subject.name'" ng-class="{reverse: reverse}"></i>
-														</th>
-														<th ng-click="panel.sortBy('end')">
-															เวลาสิ้นสุด <i class="fa fa-sort" ng-show="sort === 'end'" ng-class="{reverse: reverse}"></i>
-														</th>
-														<th ng-click="panel.sortBy('level')">	
-															ระดับความยาก <i class="fa fa-sort" ng-show="sort === 'level'" ng-class="{reverse: reverse}"></i>
-														</th>
-														<th>	
-															คะแนน 
-														</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr ng-repeat="quiz in subjectData[0].quiz | filter:search:strict | orderBy:sort:reverse">
-														<td><% $index+1 %></td>
-														<td><% quiz.name  %></td>
-														<td><% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></td>
-														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
-														<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
-														<td>
-															<button class="button is-outlined" ng-click="showModal($index)" >
-																<i class="fa fa-search"></i>
-															</button>
-														</td>
-													</tr>
-												</tbody>
-											</table>
+												<div class="notification is-danger" ng-show="!subjectData[0].quiz.length">
+													 ไม่พบแบบทดสอบในวิชานี้
+										    </div>
+												<table class="table">
+													<thead ng-hide="!subjectData[0].quiz.length">
+														<tr >
+															<th ng-click="panel.sortBy('$index')">
+																# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('name')">
+																ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('quiz_time')">
+																เวลา <i class="fa fa-sort" ng-show="sort === 'quiz_time'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('quiz_qa')">
+																จำนวนข้อ <i class="fa fa-sort" ng-show="sort === 'quiz_qa'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('start')">
+																เวลาเริ่มต้น <i class="fa fa-sort" ng-show="sort === 'subject.name'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('end')">
+																เวลาสิ้นสุด <i class="fa fa-sort" ng-show="sort === 'end'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('level')">	
+																ระดับความยาก <i class="fa fa-sort" ng-show="sort === 'level'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th>	
+																คะแนน 
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="quiz in subjectData[0].quiz | filter:search:strict | orderBy:sort:reverse">
+															<td><% $index+1 %></td>
+															<td><% quiz.name %></td>
+															<td><% quiz.quiz_time %></td>
+															<td><% quiz.quiz_qa.length %></td>
+															<td><% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></td>
+															<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
+															<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
+															<td>
+																<button class="button is-outlined" ng-click="showModal($index)" >
+																	<i class="fa fa-search"></i>
+																</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
 												<div class="modal" ng-class="{ 'is-active':modal }">
 												  <div class="modal-background"></div>
 												  <div class="modal-card">
@@ -635,7 +646,7 @@
 								return input;
 						};
 				});
-				
+
 				app.controller('PanelController',function($http,$scope,$window, CSRF_TOKEN)
 				{
 					$scope.modal = false;
