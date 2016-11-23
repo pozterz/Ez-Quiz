@@ -246,7 +246,7 @@
 														<td><% quiz.name  %></td>
 														<td><% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></td>
 														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
-														<td><% quiz.level  %></td>
+														<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
 														<td>
 															<button class="button is-outlined" ng-click="showModal($index)" >
 																<i class="fa fa-search"></i>
@@ -363,7 +363,6 @@
 										<div class="control">
 										<label class="label">ข้อที่ <span><% $index+1 %></span></label>
 										<label class="label">คำถาม<span></span></label>
-										
 										<input type="text" class="input" name="question" ng-model="question.ask" placeholder="คำถาม">
 										</div>
 									</div>
@@ -446,7 +445,7 @@
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
 														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
-														<td><% quiz.level  %></td>
+														<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
 													</tr>
 												</tbody>
 											</table>
@@ -502,7 +501,7 @@
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
 														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
-														<td><% quiz.level  %></td>
+														<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
 													</tr>
 												</tbody>
 											</table>
@@ -558,7 +557,7 @@
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
 														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
-														<td><% quiz.level  %></td>
+														<td><i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i></td>
 													</tr>
 												</tbody>
 											</table>
@@ -623,9 +622,20 @@
 			      }
 			  })
 
-				//
 				app.constant("CSRF_TOKEN", '{{ csrf_token() }}')
 
+				app.filter('range', function() {
+						return function(input, total) {
+								total = parseInt(total);
+
+								for (var i = 0; i < total; i++) {
+										input.push(i);
+								}
+
+								return input;
+						};
+				});
+				
 				app.controller('PanelController',function($http,$scope,$window, CSRF_TOKEN)
 				{
 					$scope.modal = false;
