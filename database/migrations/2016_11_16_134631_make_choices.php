@@ -20,7 +20,7 @@ class MakeChoices extends Migration
             $table->timestamps();
         });
         Schema::table('choices',function(Blueprint $table){
-            $table->foreign('quiz_qas_id')->references('id')->on('quiz_qas')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('quiz_qa_id')->references('id')->on('quiz_qas')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
