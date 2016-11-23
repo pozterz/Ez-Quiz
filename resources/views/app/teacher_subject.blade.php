@@ -15,9 +15,26 @@
 												</li>
 												<li>
 													<a href="#" ng-click="panel.selectTab(1);" ng-class="{ 'is-active':panel.isSelected(1) }">
-														<i class="icon is-small fa fa-clone"></i> วิชาทั้งหมด <span class="tag is-danger is-small" ng-model="subjectcount"><%subjectcount%></span>
+														<i class="icon is-small fa fa-clone"></i> วิชาทั้งหมด <span class="tag is-danger is-small" ng-model="subjects.length"><%subjects.length%></span>
 													</a>
 												</li>
+										</ul>
+										<p class="menu-label">
+											รายวิชา
+										</p>
+										<ul class="menu-list">
+											<li>
+												<ul>
+													<li ng-show="!subjects.length">
+														<a href="#">ไม่พบวิชาที่สร้างไว้</a>
+													</li>
+													<li ng-repeat="subject in subjects">
+														<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(9);"> <% subject.name  | limitTo: 15 %><%subject.name.length > 15 ? '...' : ''%>
+															<span class="tag is-light-blue is-small"  ng-model="subject.quiz.length"><% subject.quiz.length %></span>
+														</a>
+													</li>
+												</ul>
+											</li>
 										</ul>
 										<p class="menu-label">
 												แบบทดสอบ
@@ -139,6 +156,18 @@
 								</div>
 						</div>
 				</div>
+				<!-- Subject -->
+				<div class="tile is-parent" ng-show="panel.isSelected(9)">
+						<div class="tile is-child box">
+							<article class="media">
+								<div class="media-content">
+									<div class="content">
+										xx
+									</div>
+								</div>
+							</article>
+						</div>
+					</div>
 				<!-- add quiz -->
 				<div class="tile is-parent" ng-show="panel.isSelected(3)">
 					<div class="tile is-child box">
@@ -475,16 +504,40 @@
 						var name = this.tabName(setTab)
 						if(name){
 							this.getData(name);
-							//this.getSubjectCount();
+							getSubject();
 						}
 						
 					};
+
+					$scope.subjects = [];
+					var getSubject = function()
+					{
+						$http.get("{{ url('/Teacher') }}"+'/getSubjects')
+								.then(function(response)
+								{
+									$scope.subjects = response.data.result;
+									console.log($scope.subjects);
+								})
+					}
+
 					var getSubjectCount = function()
 					{
 						$http.get("{{ url('/Teacher') }}"+'/getSubjectCount')
 								.then(function(response)
 								{
 									$scope.subjectcount = response.data.result;
+								})
+					}
+
+					this.getSubjectQuiz = function(id){
+						$http.get("{{ url('/getSubjectQuizzes') }}"+'/'+id)
+								.then(function(response)
+								{
+									$scope.subjectquiz = [];
+									$scope.subject = [];
+									$scope.subjectquiz = response.data.result;
+									$scope.subject = response.data.subject;
+									//console.log($scope.subjectquiz);
 								})
 					}
 
@@ -499,8 +552,6 @@
 
 										$scope.quiz.subject_id = $scope.datas[0].id;
 										//console.log($scope.datas);
-								}).then(function(){
-									getSubjectCount();
 								});
 					}
 					
@@ -539,6 +590,7 @@
 							case 6: return 'getInActiveQuizzes'; break;
 							case 7: return 0; break;
 							case 8: return 0; break;
+							case 9: return 0; break;
 						}
 					};
 

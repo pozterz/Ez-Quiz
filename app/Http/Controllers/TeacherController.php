@@ -75,6 +75,11 @@ class TeacherController extends Controller
 	public function getSubjects()
 	{
 		$subjects = Subject::where('user_id',Auth::user()->id)->get();
+		foreach ($subjects as $key => $subject) {
+				$subject->User;
+				$subject->Member;
+				$subject->Quiz;
+			}
 		return response()
 						->json([
 							'result' => $subjects,
