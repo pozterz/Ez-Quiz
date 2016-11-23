@@ -81,6 +81,8 @@ class AppController extends Controller
             	]);
    	}
 
+  
+
    	/**
    	 * get teacher's subject
    	 * @param  [int] $teacher_id [teacher id]

@@ -31,6 +31,7 @@
 				 						<li>
 								 				ความยาก : <i class="fa fa-star" ng-repeat="x in [] | range:Questions[0].level"></i>
 				 						</li>
+				 						<li>จำนวน : <% Questions[0].quiz_qa.length %> ข้อ</li>
 				 						<li>เวลา : <% Questions[0].quiz_time %> นาที.</li>
 					 				</ul>
 								</div>
@@ -91,7 +92,7 @@
 				<div class="columns is-mobile" ng-show="start">
 					<div class="column is-half is-offset-one-quarter has-text-centered">
 						<button type="button" class="button is-success is-outlined" ng-class="{ 'is-disabled':!start }" ng-click="start = 1; sendAnswer();">
-							<i class="fa fa-check"></i> &nbsp; ส่งคำตอบ
+							<i class="fa fa-check"></i> &nbsp; ยืนยันการส่งคำตอบ
 						</button>
 					</div>
 				</div>

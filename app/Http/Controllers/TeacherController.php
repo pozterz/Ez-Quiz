@@ -86,6 +86,29 @@ class TeacherController extends Controller
 							]);
 	}
 
+	 /**
+     * get quiz in subject
+     * @param  [int] $subject_id [subject id]
+     * @return [json Array]  [array(id,name,subject_id,level,start,end,timestamp)]
+     */
+    public function getSubjectData($id)
+    {
+    	$subject = Subject::where('user_id',Auth::user()->id)->where('id',$id)->get();
+    	if(count($subject)){
+	      foreach ($subject[0]->Quiz as $key => $quiz) {
+	       $quiz->QuizQa;
+	       foreach ($quiz->Answer as $key => $answer) {
+	       	$answer->pivot;
+	       }
+	      }
+	      $subject[0]->Member;
+      }
+      return response()
+            ->json([
+              'result' => $subject,
+              ]);
+    }
+
 	public function getSubjectCount(){
 		$subjects = Subject::where('user_id',Auth::user()->id)->count();
 		return response()

@@ -29,7 +29,7 @@
 														<a href="#">ไม่พบวิชาที่สร้างไว้</a>
 													</li>
 													<li ng-repeat="subject in subjects">
-														<a href="#" ng-click="panel.getSubjectQuiz(subject.id); panel.selectTab(9);"> <% subject.name  | limitTo: 15 %><%subject.name.length > 15 ? '...' : ''%>
+														<a href="#" ng-click="panel.getSubjectData(subject.id); panel.selectTab(9); panel.selectMenuTab(1);"> <% subject.name  | limitTo: 15 %><%subject.name.length > 15 ? '...' : ''%>
 															<span class="tag is-light-blue is-small"  ng-model="subject.quiz.length"><% subject.quiz.length %></span>
 														</a>
 													</li>
@@ -156,13 +156,145 @@
 								</div>
 						</div>
 				</div>
-				<!-- Subject -->
+				<!-- Specific Subject -->
 				<div class="tile is-parent" ng-show="panel.isSelected(9)">
 						<div class="tile is-child box">
 							<article class="media">
 								<div class="media-content">
 									<div class="content">
-										xx
+										<loading></loading>
+										<div ng-hide="loading">
+											<div class="columns">
+													<div class="column">
+															<h2><% subjectData[0].subject_number %> : <% subjectData[0].name %> </h2>
+													</div>
+											</div>
+											<div class="columns">
+												<div class="column">
+											      <button class="button is-primary" ng-click="panel.selectMenuTab(1)" ng-class="panel.isMenuSelected(1)?'is-active':'is-outlined'">
+											        <span class="icon is-small"><i class="fa fa-users"></i></span>
+											        <span>สมาชิก</span>
+											      </button>
+											     </div>
+											     <div class="column">
+											      <button class="button is-info is-outlined" ng-click="panel.selectMenuTab(2)"  ng-class="panel.isMenuSelected(2)?'is-active':'is-outlined'">
+											        <span class="icon is-small"><i class="fa fa-book"></i></span>
+											        <span>แบบทดสอบ</span>
+											      </button>
+											      </div>
+											      <div class="column">
+											      <button class="button is-dark is-outlined" ng-click="panel.selectMenuTab(3)"  ng-class="panel.isMenuSelected(3)?'is-active':'is-outlined'">
+											        <span class="icon is-small"><i class="fa fa-edit"></i></span>
+											        <span>แก้ไข</span>
+											      </button>
+											      </div>
+											     <div class="column">
+											      <button class="button is-danger is-outlined" ng-click="panel.selectMenuTab(4)"  ng-class="panel.isMenuSelected(4)?'is-active':'is-outlined'">
+											        <span class="icon is-small"><i class="fa fa-times"></i></span>
+											        <span>ลบ</span>
+											      </button>
+												</div>
+											</div>
+											<!-- member menu -->
+											<div ng-show="panel.isMenuSelected(1)">
+												<div class="notification is-danger" ng-show="!subjectData[0].member.length">
+													  ไม่มีสมาชิกในวิชานี้
+									      </div>
+												<table class="table">
+													<thead ng-hide="!subjectData[0].member.length">
+														<tr>
+															<th>รหัศนักศึกษา</th>
+															<th>ชื่อ</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="member in subjectData[0].member">
+															<td><% member.student_id %></td>
+															<td><% member.name %></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- quizzes menu -->
+											<div ng-show="panel.isMenuSelected(2)">
+											<table class="table">
+												<thead>
+													<tr >
+														<th ng-click="panel.sortBy('$index')">
+															# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
+														</th>
+														<th ng-click="panel.sortBy('name')">
+															ชื่อแบบทดสอบ <i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
+														</th>
+														<th ng-click="panel.sortBy('start')">
+															เวลาเริ่มต้น <i class="fa fa-sort" ng-show="sort === 'subject.name'" ng-class="{reverse: reverse}"></i>
+														</th>
+														<th ng-click="panel.sortBy('end')">
+															เวลาสิ้นสุด <i class="fa fa-sort" ng-show="sort === 'end'" ng-class="{reverse: reverse}"></i>
+														</th>
+														<th ng-click="panel.sortBy('level')">	
+															ระดับความยาก <i class="fa fa-sort" ng-show="sort === 'level'" ng-class="{reverse: reverse}"></i>
+														</th>
+														<th>	
+															คะแนน 
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="quiz in subjectData[0].quiz | filter:search:strict | orderBy:sort:reverse">
+														<td><% $index+1 %></td>
+														<td><% quiz.name  %></td>
+														<td><% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></td>
+														<td><% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></td>
+														<td><% quiz.level  %></td>
+														<td>
+															<button class="button is-outlined" ng-click="showModal($index)" >
+																<i class="fa fa-search"></i>
+															</button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+												<div class="modal" ng-class="{ 'is-active':modal }">
+												  <div class="modal-background"></div>
+												  <div class="modal-card">
+												    <header class="modal-card-head">
+												      <p class="modal-card-title">ตารางคะแนน</p>
+												      <button class="delete" ng-click="closeModal()"></button>
+												    </header>
+												    <section class="modal-card-body">
+												      <!-- Content ... -->
+												      <div class="notification is-danger" ng-show="!subjectData[0].quiz[answer_index].answer.length">
+												      	ยังไม่มีผู้ตอบคำถามในแบบทดสอบนี้
+												      </div>
+												      <table class="table" ng-show="subjectData[0].quiz[answer_index].answer.length">
+												      	<thead>
+												      		<tr>
+												      			<th>รหัสนักศึกษา</th>
+												      			<th>ชื่อ</th>
+												      			<th>คะแนน</th>
+												      			<th>เวลา</th>
+												      		</tr>
+												      	</thead>
+												      	<tbody>
+												      		<tr ng-repeat="Answer in subjectData[0].quiz[answer_index].answer">
+												      			<td><% Answer.student_id %></td>
+												      			<td><% Answer.name %></td>
+												      			<td><% Answer.pivot.point %></td>
+												      			<td><% Math.floor(Answer.pivot.spendtime/60) %> นาที <% Answer.pivot.spendtime%60 %> วินาที</td>
+												      		</tr>
+												      	</tbody>
+												      </table>
+												    </section>
+												    <footer class="modal-card-foot">
+												      <a class="button is-danger is-outlined" ng-click="closeModal()">ปิดหน้านี้</a>
+												    </footer>
+												  </div>
+												</div>
+											</div>
+											<!-- edit menu -->
+											<!-- delete menu -->
+										</div>
 									</div>
 								</div>
 							</article>
@@ -496,6 +628,18 @@
 
 				app.controller('PanelController',function($http,$scope,$window, CSRF_TOKEN)
 				{
+					$scope.modal = false;
+					$scope.answer_index = 0;
+					$scope.Math = window.Math;
+					$scope.showModal = function(id){
+						$scope.modal = true;
+						$scope.answer_index = id;
+						console.log(id);
+					}
+
+					$scope.closeModal = function(){
+						$scope.modal = false;
+					}
 
 					this.selectTab = function(setTab)
 					{
@@ -509,6 +653,17 @@
 						
 					};
 
+					this.menuTab = 0;
+					this.selectMenuTab = function(setTab)
+					{
+						this.menuTab = setTab;
+					};
+
+					this.isMenuSelected = function(checkTab)
+					{
+						return this.menuTab === checkTab;
+					}
+
 					$scope.subjects = [];
 					var getSubject = function()
 					{
@@ -516,16 +671,7 @@
 								.then(function(response)
 								{
 									$scope.subjects = response.data.result;
-									console.log($scope.subjects);
-								})
-					}
-
-					var getSubjectCount = function()
-					{
-						$http.get("{{ url('/Teacher') }}"+'/getSubjectCount')
-								.then(function(response)
-								{
-									$scope.subjectcount = response.data.result;
+									//console.log($scope.subjects);
 								})
 					}
 
@@ -537,7 +683,29 @@
 									$scope.subject = [];
 									$scope.subjectquiz = response.data.result;
 									$scope.subject = response.data.subject;
-									//console.log($scope.subjectquiz);
+									console.log($scope.subject);
+								})
+					}
+
+					this.getSubjectData = function(id){
+						$http.get("{{ url('/Teacher/getSubjectData') }}"+'/'+id)
+								.then(function(response)
+								{
+									$scope.subjectData = [];
+									$scope.subjectData = response.data.result;
+									console.log($scope.subjectData);
+								})
+					}
+
+					this.getSubjectQuiz = function(id){
+						$http.get("{{ url('/getSubjectQuizzes') }}"+'/'+id)
+								.then(function(response)
+								{
+									$scope.subjectquiz = [];
+									$scope.subject = [];
+									$scope.subjectquiz = response.data.result;
+									$scope.subject = response.data.subject;
+									console.log($scope.subjectquiz);
 								})
 					}
 
@@ -574,8 +742,6 @@
 											}, 3000);
 										}
 										//console.log($scope.post_datas);
-								}).then(function(){
-									getSubjectCount();
 								});
 					}
 
@@ -591,6 +757,7 @@
 							case 7: return 0; break;
 							case 8: return 0; break;
 							case 9: return 0; break;
+							default : return 0;
 						}
 					};
 

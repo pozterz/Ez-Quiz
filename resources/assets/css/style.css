@@ -75,7 +75,13 @@ button,select,input{
 	font-family: inherit;
 }
 
+.hero.is-primary .tabs ul li .is-active{
+  color:#00d1b2;
+}
 
+.hero.is-primary .tabs a{
+  color:black;
+}
 .hovereffect{ transition: all .2s ease-in-out; }
 .hovereffect:hover { transform: scale(1.05); } 
 .hovereffect a{ color:inherit; }

@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web']], function () {
 	// teacher route
 	Route::get('/Teacher/Subject','TeacherController@Subject');
 	Route::get('/Teacher/getSubjects', 'TeacherController@getSubjects');
+	Route::get('/Teacher/getSubjectData/{id}', 'TeacherController@getSubjectData');
 	Route::get('/Teacher/getSubjectCount', 'TeacherController@getSubjectCount');
 	Route::get('/Teacher/addSubject', 'TeacherController@addSubject');
 	Route::post('/Teacher/newSubject', 'TeacherController@newSubject');

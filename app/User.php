@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function Answer()
     {
-        return $this->BelongsToMany(Quiz::class);
+        return $this->BelongsToMany(Quiz::class)->withPivot('point','spendtime');
     }
 
 }
