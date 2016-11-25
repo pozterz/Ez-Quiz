@@ -17,7 +17,7 @@ class Quiz extends Migration
             $table->string('name',200);
             $table->integer('subject_id')->unsigned()->index();
             $table->integer('level');
-            $table->time('duration');
+            $table->time('quiz_time');
             $table->dateTime('start');
             $table->dateTime('end');
             $table->timestamps();
