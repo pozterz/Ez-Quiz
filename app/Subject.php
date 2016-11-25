@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+    protected $fillable = ['name','subject_number'];
     public function User()
     {
         return $this->BelongsTo(User::class);

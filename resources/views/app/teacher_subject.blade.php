@@ -112,6 +112,8 @@
 														<th ng-click="panel.sortBy('created_at')">
 															เวลาที่สร้าง <i class="fa fa-sort" ng-show="sort === 'created_at'" ng-class="{reverse: reverse}"></i>
 														</th>
+														<th>
+														</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -120,6 +122,7 @@
 														<td><% subject.name  %></td>
 														<td><% subject.subject_number %></td>
 														<td><% panel.convertTime(subject.created_at) | date:'d MMMM y HH:mm น.' %></td>
+														<td><button type="button" class="button is-danger is-outlined" ng-click="panel.deleteSubject(subject.id)">ลบ</button></td>
 													</tr>
 												</tbody>
 											</table>
@@ -133,6 +136,12 @@
 				<div class="tile is-parent" ng-show="panel.isSelected(2)">
 						<div class="tile is-child box">
 								<div class="content">
+									<div class="notification fade is-primary" ng-show="notification" ng-if="post_datas.length">
+										 <button class="delete" ng-click="notification = false"></button>
+										 <p ng-repeat="message in post_datas">
+										 	 <% message.message %>
+										 </p>
+									</div>
 									<div ng-repeat="stuff in stuffs" class="control columns">
 											<div class="column is-one-quarter">
 												<input type="text" class="input is-primary" placeholder="รหัสวิชา" ng-model="stuff.subject_number">
@@ -147,12 +156,7 @@
 									<button type="button" class="button is-info is-outlined" ng-click="panel.addStuff()">เพิ่มวิชา</button>
 									<button type="button" class="button is-success is-outlined" ng-click="panel.confirmStuff('newSubject');">ยืนยัน</button>
 									<br/><br/>
-									<div class="notification fade is-primary" ng-show="notification" ng-if="post_datas.length">
-										 <button class="delete" ng-click="notification = false"></button>
-										 <p ng-repeat="message in post_datas">
-										 	 <% message.message %>
-										 </p>
-									</div>
+									
 								</div>
 						</div>
 				</div>
@@ -170,30 +174,24 @@
 													</div>
 											</div>
 											<div class="columns">
-												<div class="column">
-											      <button class="button is-primary" ng-click="panel.selectMenuTab(1)" ng-class="panel.isMenuSelected(1)?'is-active':'is-outlined'">
-											        <span class="icon is-small"><i class="fa fa-users"></i></span>
-											        <span>สมาชิก</span>
-											      </button>
-											     </div>
-											     <div class="column">
-											      <button class="button is-info is-outlined" ng-click="panel.selectMenuTab(2)"  ng-class="panel.isMenuSelected(2)?'is-active':'is-outlined'">
-											        <span class="icon is-small"><i class="fa fa-book"></i></span>
-											        <span>แบบทดสอบ</span>
-											      </button>
-											      </div>
-											      <div class="column">
-											      <button class="button is-dark is-outlined" ng-click="panel.selectMenuTab(3)"  ng-class="panel.isMenuSelected(3)?'is-active':'is-outlined'">
-											        <span class="icon is-small"><i class="fa fa-edit"></i></span>
-											        <span>แก้ไข</span>
-											      </button>
-											      </div>
-											     <div class="column">
-											      <button class="button is-danger is-outlined" ng-click="panel.selectMenuTab(4)"  ng-class="panel.isMenuSelected(4)?'is-active':'is-outlined'">
-											        <span class="icon is-small"><i class="fa fa-times"></i></span>
-											        <span>ลบ</span>
-											      </button>
-												</div>
+												<div class="column has-text-centered">
+										      <button class="button is-primary" ng-click="panel.selectMenuTab(1)" ng-class="panel.isMenuSelected(1)?'is-active':'is-outlined'">
+										        <span class="icon is-small"><i class="fa fa-users"></i></span>
+										        <span>สมาชิก</span>
+										      </button>
+										     </div>
+										     <div class="column has-text-centered">
+										      <button class="button is-info is-outlined" ng-click="panel.selectMenuTab(2)"  ng-class="panel.isMenuSelected(2)?'is-active':'is-outlined'">
+										        <span class="icon is-small"><i class="fa fa-book"></i></span>
+										        <span>แบบทดสอบ</span>
+										      </button>
+										      </div>
+										      <div class="column has-text-centered">
+										      <button class="button is-dark is-outlined" ng-click="panel.selectMenuTab(3)"  ng-class="panel.isMenuSelected(3)?'is-active':'is-outlined'">
+										        <span class="icon is-small"><i class="fa fa-edit"></i></span>
+										        <span>แก้ไข</span>
+										      </button>
+										      </div>
 											</div>
 											<!-- member menu -->
 											<div ng-show="panel.isMenuSelected(1)">
@@ -304,7 +302,25 @@
 												</div>
 											</div>
 											<!-- edit menu -->
-											<!-- delete menu -->
+											<div ng-show="panel.isMenuSelected(3)">
+												<br/>
+												<div class="box">
+													<div class="notification" ng-show="post_datas.length" ng-class="(post_datas[0].type == 'failed')?'is-danger':'is-success'">
+														<% post_datas[0].message %>
+													</div>
+													<div class="columns">
+														<div class="column is-2">
+															<label class="label">รหัสวิชา</label>
+															<input type="text" class="input" ng-model="edit[0].subject_number">
+														</div>
+														<div class="column">
+															<label class="label">ชื่อวิชา</label>
+															<input type="text" class="input" ng-model="edit[0].name">
+														</div>
+													</div>
+													<button type="button" class="button is-success is-outlined" ng-click="panel.editSubject()">ยืนยัน</button><br/><br/>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -708,14 +724,42 @@
 								})
 					}
 
+					this.deleteSubject = function(id){
+					$http.post("{{ url('/Teacher/deleteSubject') }}",{data : id,csrf_token: CSRF_TOKEN})
+								.then(function(response)
+								{
+										$scope.post_datas = response.data.result;
+								}).then(function(){
+									$http.get("{{ url('/getSubjects') }}")
+										.then(function(response)
+										{
+											$scope.datas = response.data.result;
+											$scope.loading = false;
+										//	$scope.quiz.subject_id = $scope.datas[0].id;
+										})
+								});
+								this.selectTab(1);
+					}
+
 					this.getSubjectData = function(id){
 						$http.get("{{ url('/Teacher/getSubjectData') }}"+'/'+id)
 								.then(function(response)
 								{
 									$scope.subjectData = [];
+									$scope.edit = [];
 									$scope.subjectData = response.data.result;
+									$scope.edit.push({
+										'subject_number': $scope.subjectData[0].subject_number,
+										'name' : $scope.subjectData[0].name,
+										'editID' : $scope.subjectData[0].id,
+									});
+									console.log($scope.edit);
 									console.log($scope.subjectData);
 								})
+					}
+
+					this.editSubject = function(){
+						this.postData('editSubject',$scope.edit);
 					}
 
 					this.getSubjectQuiz = function(id){

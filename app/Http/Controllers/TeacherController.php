@@ -117,6 +117,84 @@ class TeacherController extends Controller
 							]);
 	}
 
+	public function editSubject(Request $request){
+		$data = $request->get('data');
+		$own = false;
+		$message = array('type'=> 'failed','message'=>'');
+		$result = array();
+
+		if(strlen($data[0]["subject_number"])  <= 0 || strlen($data[0]["name"]) <= 0 ){
+			$message['message'] = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+		}
+		else{
+			foreach (Auth::user()->Subject as $key => $subject)
+			{
+				if($subject->id == $data[0]["editID"])
+				{
+					$own = true;
+				}
+				else
+				{
+					$message['message'] = 'คุณไม่ใช้เจ้าของวิชานี้';
+				}
+
+			}
+		}
+
+		if($own)
+		{
+			$subject = Subject::find($data[0]["editID"]);
+			$subject->update([
+				'name' => $data[0]['name'],
+				'subject_number' => $data[0]['subject_number'],
+			]);
+			$message['type'] = 'success';
+			$message['message'] = 'แก้ไขวิชาสำเร็จ';
+		}
+		
+
+		array_push($result, $message);
+		return response()
+            ->json([
+              'result' => $result,
+              ]);
+	}
+
+	public function deleteSubject(Request $request){
+		$data = $request->get('data');
+		$own = false;
+		$message = array('type'=> 'failed','message'=>'');
+		$result = array();
+
+		foreach (Auth::user()->Subject as $key => $subject)
+		{
+			if($subject->id == $data)
+			{
+				$own = true;
+			}
+			else
+			{
+				$message['message'] = 'คุณไม่ใช้เจ้าของวิชานี้';
+			}
+
+		}
+
+		if($own)
+		{	
+			$subject = Subject::find($data);
+			$subject->delete();
+			$message['type'] = 'failed';
+			$message['message'] = 'ลบวิชาสำเร็จ';
+		}
+		
+
+		array_push($result, $message);
+		return response()
+            ->json([
+              'result' => $result,
+              ]);
+	}
+
 	public function getQuizzes()
 	{
 		$subjects = Subject::where('user_id',Auth::user()->id)->get();
