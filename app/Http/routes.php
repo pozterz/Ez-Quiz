@@ -51,6 +51,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post('/Teacher/newQuizzes', 'TeacherController@newQuizzes');
 	Route::get('/Teacher/getActiveQuizzes', 'TeacherController@getActiveQuizzes');
 	Route::get('/Teacher/getInActiveQuizzes', 'TeacherController@getInActiveQuizzes');
+	Route::post('/Teacher/removeMember','TeacherController@removeMember');
 	Route::post('/Teacher/editSubject','TeacherController@editSubject');
 	Route::post('/Teacher/deleteSubject','TeacherController@deleteSubject');
 

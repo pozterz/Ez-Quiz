@@ -209,12 +209,16 @@
 														<tr>
 															<th>รหัศนักศึกษา</th>
 															<th>ชื่อ</th>
+															<th>ลบออกจากวิชา</th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr ng-repeat="member in subjectData[0].member">
 															<td><% member.student_id %></td>
 															<td><% member.name %></td>
+															<td>
+																<button type="button" class="button is-danger is-outlined " ng-click="panel.rmMember(subjectData[0].id,member.id)"><i class="fa fa-times"></i> &nbsp; ลบ</button>
+															</td>
 														</tr>
 													</tbody>
 												</table>
@@ -752,6 +756,7 @@
 											'editID' : $scope.subjectData[0].id,
 										});
 									}
+									console.log($scope.subjectData);
 
 								})
 					}
@@ -850,6 +855,20 @@
 						name: "",
 						subject_number: "",
 					})
+
+					this.rmMember = function(subject_id,user_id)
+					{
+							if (confirm("ยืนยันการลบผู้ใช้นี้ ?")) {
+							var data = {
+								'subject_id' : subject_id,
+								'user_id' : user_id,
+							}
+
+							this.postData('removeMember',data);
+							this.getSubjectData(subject_id);
+							this.selectMenuTab(1);
+						}
+					}
 
 					this.addStuff = function()
 					{
