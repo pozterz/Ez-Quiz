@@ -60,7 +60,7 @@
 						</a>
 						@endif
 					
-					<a class="nav-item is-tab {{ Request::is('Profile')?'is-active':'' }}">
+					<a class="nav-item is-tab {{ Request::is('Profile')?'is-active':'' }}" href="{{ url('/profile') }}">
 						 <i class="fa fa-user"></i> &nbsp; ข้อมูลส่วนตัว
 					</a>
 					<a class="nav-item is-tab" href="{{ url('/logout') }}">

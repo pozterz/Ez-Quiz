@@ -102,10 +102,17 @@ class TeacherController extends Controller
 	       }
 	      }
 	      $subject[0]->Member;
+	      $type = "success";
+      }
+      else
+      {
+      	$subject = 'ไม่พบวิชานี้ในระบบ';
+      	$type = "failed";
       }
       return response()
             ->json([
               'result' => $subject,
+              'type' => $type
               ]);
     }
 

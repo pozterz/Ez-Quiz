@@ -84,11 +84,11 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!subjects.length && !loading">
 											ไม่พบวิชาของคุณในฐานข้อมูล
 										</div>
 										<div ng-hide="loading">
-											<table class="table" ng-show="datas.length" >
+											<table class="table" ng-show="subjects.length" >
 												<caption>
 													<div class="column is-4 is-offset-8">
 														<p class="control has-icon has-icon-right is-pulled-right">
@@ -117,7 +117,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="subject in datas | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="subject in subjects | filter:search:strict | orderBy:sort:reverse">
 														<td><% $index+1 %></td>
 														<td><% subject.name  %></td>
 														<td><% subject.subject_number %></td>
@@ -167,7 +167,13 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div ng-hide="loading">
+										<div class="notification fade is-danger" ng-show="resType == 'failed'" >
+										 <button class="delete" ng-click="notification = false"></button>
+											 <p>
+											 	 <% subjectData %>
+											 </p>
+										</div>
+										<div ng-hide="loading || resType == 'failed'">
 											<div class="columns">
 													<div class="column">
 															<h2><% subjectData[0].subject_number %> : <% subjectData[0].name %> </h2>
@@ -332,10 +338,10 @@
 					<div class="tile is-child box">
 						<div class="columns">
 								<div class="control column">
-									<div class="notification fade is-danger" ng-show="!datas.length">ไม่พบวิชาของคุณ กรุณาสร้างวิชาก่อนที่จะเพิ่มแบบทดสอบ</div>
+									<div class="notification fade is-danger" ng-show="!subjects.length">ไม่พบวิชาของคุณ กรุณาสร้างวิชาก่อนที่จะเพิ่มแบบทดสอบ</div>
 								</div>
 							</div>
-						<div class="content" ng-show="datas.length">
+						<div class="content" ng-show="subjects.length">
 							<div class="columns">
 								<div class="control column">
 									<div class="notification fade is-danger" ng-show="errmsg"><% errmsg %></div>
@@ -354,7 +360,7 @@
 								<div class="control column">
 									<span class="select">
 									  <select  ng-model="quiz.subject_id">
-									    <option ng-repeat="subject in datas" value="<% subject.id %>"><% subject.name | limitTo: 17 %><%subject.name.length > 17 ? '...' : ''%></option>
+									    <option ng-repeat="subject in subjects" value="<% subject.id %>"><% subject.name | limitTo: 17 %><%subject.name.length > 17 ? '...' : ''%></option>
 									  </select>
 									</span>
 								</div>
@@ -433,11 +439,11 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!quizzes.length && !loading">
 											ไม่พบคำถามในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
-											<table class="table" ng-show="datas.length" >
+											<table class="table" ng-show="quizzes.length" >
 												<caption>
 													<div class="column is-4 is-offset-8">
 														<p class="control has-icon has-icon-right is-pulled-right">
@@ -467,7 +473,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="quiz in datas | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse">
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
@@ -489,11 +495,11 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!quizzes.length && !loading">
 											ไม่พบคำถามที่กำลังทำงาน ในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
-											<table class="table" ng-show="datas.length" >
+											<table class="table" ng-show="quizzes.length" >
 												<caption>
 													<div class="column is-4 is-offset-8">
 														<p class="control has-icon has-icon-right is-pulled-right">
@@ -523,7 +529,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="quiz in datas | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse">
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
@@ -545,11 +551,11 @@
 								<div class="media-content">
 									<div class="content">
 										<loading></loading>
-										<div class="notification fade is-primary" ng-show="!datas.length && !loading">
+										<div class="notification fade is-primary" ng-show="!quizzes.length && !loading">
 											ไม่พบคำถามที่สิ้นสุดการทำงานแล้ว ในฐานข้อมูล
 										</div>
 										<div class="table" ng-hide="loading">
-											<table class="table" ng-show="datas.length" >
+											<table class="table" ng-show="quizzes.length" >
 												<caption>
 													<div class="column is-4 is-offset-8">
 														<p class="control has-icon has-icon-right is-pulled-right">
@@ -579,7 +585,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="quiz in datas | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse">
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
@@ -684,10 +690,10 @@
 						$scope.notification = false;
 						var name = this.tabName(setTab)
 						if(name){
-							this.getData(name);
-							getSubject();
+							getData(name);
 						}
-						
+						getSubject();
+						getQuizzes();
 					};
 
 					this.menuTab = 0;
@@ -712,49 +718,41 @@
 								})
 					}
 
-					this.getSubjectQuiz = function(id){
-						$http.get("{{ url('/getSubjectQuizzes') }}"+'/'+id)
+					var getQuizzes = function()
+					{
+						$http.get("{{ url('/Teacher') }}"+'/getQuizzes')
 								.then(function(response)
 								{
-									$scope.subjectquiz = [];
-									$scope.subject = [];
-									$scope.subjectquiz = response.data.result;
-									$scope.subject = response.data.subject;
-									console.log($scope.subject);
+									$scope.quizzes = response.data.result;
+									//console.log('getQuizzes'+$scope.quizzes);
 								})
 					}
 
 					this.deleteSubject = function(id){
-					$http.post("{{ url('/Teacher/deleteSubject') }}",{data : id,csrf_token: CSRF_TOKEN})
-								.then(function(response)
-								{
-										$scope.post_datas = response.data.result;
-								}).then(function(){
-									$http.get("{{ url('/getSubjects') }}")
-										.then(function(response)
-										{
-											$scope.datas = response.data.result;
-											$scope.loading = false;
-										//	$scope.quiz.subject_id = $scope.datas[0].id;
-										})
-								});
-								this.selectTab(1);
+						if (confirm("ยืนยันการลบวิชานี้ ?")) {
+							this.postData('deleteSubject',id);
+						}
 					}
 
 					this.getSubjectData = function(id){
+
+						$scope.loading = true;
 						$http.get("{{ url('/Teacher/getSubjectData') }}"+'/'+id)
 								.then(function(response)
 								{
 									$scope.subjectData = [];
 									$scope.edit = [];
 									$scope.subjectData = response.data.result;
-									$scope.edit.push({
-										'subject_number': $scope.subjectData[0].subject_number,
-										'name' : $scope.subjectData[0].name,
-										'editID' : $scope.subjectData[0].id,
-									});
-									console.log($scope.edit);
-									console.log($scope.subjectData);
+									$scope.resType = response.data.type;
+									$scope.loading = false;
+									if($scope.resType == 'success'){
+										$scope.edit.push({
+											'subject_number': $scope.subjectData[0].subject_number,
+											'name' : $scope.subjectData[0].name,
+											'editID' : $scope.subjectData[0].id,
+										});
+									}
+
 								})
 					}
 
@@ -762,19 +760,7 @@
 						this.postData('editSubject',$scope.edit);
 					}
 
-					this.getSubjectQuiz = function(id){
-						$http.get("{{ url('/getSubjectQuizzes') }}"+'/'+id)
-								.then(function(response)
-								{
-									$scope.subjectquiz = [];
-									$scope.subject = [];
-									$scope.subjectquiz = response.data.result;
-									$scope.subject = response.data.subject;
-									console.log($scope.subjectquiz);
-								})
-					}
-
-					this.getData = function(url)
+					var getData = function(url)
 					{
 						$scope.loading = true;
 						$http.get("{{ url('/Teacher') }}"+'/'+url)
@@ -795,28 +781,21 @@
 								{
 										$scope.post_datas = response.data.result;
 										$scope.notification = true;
-										var refresh = false;
-										for(i in $scope.post_datas){
-											if($scope.post_datas[i].type == 'success'){
-												refresh = true;
-											}
-										}
-										if(refresh){
-											setTimeout(function(){
-												$window.location.reload();
-											}, 3000);
-										}
+										
 										//console.log($scope.post_datas);
+								}).then(function(){
+										getSubject();
+										getQuizzes();
 								});
 					}
 
 					this.tabName = function(number)
 					{
 						switch(number){
-							case 1: return 'getSubjects'; break;
+							case 1: return 0; break;
 							case 2: return 0; break;
-							case 3: return 'getSubjects'; break;
-							case 4: return 'getQuizzes'; break;
+							case 3: return 0; break;
+							case 4: return 0; break;
 							case 5: return 'getActiveQuizzes'; break;
 							case 6: return 'getInActiveQuizzes'; break;
 							case 7: return 0; break;
@@ -827,8 +806,14 @@
 					};
 
 					@if(Request::is('Teacher/Subject'))
-						this.tab = 1;
-						this.selectTab(this.tab);
+						@if(Request::get('subject'))
+						 	this.getSubjectData({{ Request::get('subject') }});
+						 	this.selectTab(9);
+						 	this.selectMenuTab(1);
+						@else
+							this.tab = 1;
+							this.selectTab(this.tab);
+						@endif
 					@else
 						this.tab = 2;
 						this.selectTab(this.tab);
