@@ -79,6 +79,13 @@ class AppController extends Controller
       $quizzes = array();
       $quizzes = $subject->Quiz()->get();
       foreach ($quizzes as $key => $quiz) {
+        $quiz['quiz_count'] = $quiz->QuizQa->count();
+        foreach ($quiz->Answer as $key => $point) {
+            if($point->pivot->user_id == Auth::user()->id){
+              $quiz['points'] = $point->pivot->point;
+              break;
+            }
+          }
         if(!Auth::guest()){
           $quiz["isAnswered"] = $quiz->Answer->contains(Auth::user()->id);
         }else{

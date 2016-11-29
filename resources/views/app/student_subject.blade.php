@@ -189,7 +189,7 @@
 								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
 								 		</span>
 						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
-						 					<span class="tag is-small is-dark" ng-show="quiz.isAnswered">ทำแล้ว</span>
+						 					<span class="tag is-small is-dark" ng-show="quiz.isAnswered"><i class="fa fa-check"></i> &nbsp; ทำแล้ว : <% quiz.points %>/<% quiz.quiz_count %> คะแนน</span>
 							 		</div>
 						 		</div>
 					 			<div class="columns">
@@ -197,9 +197,61 @@
 					 					<ul>
 					 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
 					 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %> </li>
-					 						<li>เวลา <% quiz.quiz_time %> นาที</li>
+					 						<li>จำนวน : <% quiz.quiz_count %> ข้อ</li>
+					 						<li>เวลา : <% quiz.quiz_time %> นาที</li>
 					 					</ul>
 					 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
+						 					</a>
+								 	</div>
+					 			</div>
+						 	</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+		<!-- answered quiz -->
+		<div class="tile is-parent" ng-show="panel.isSelected(4)">
+			<div class="tile is-child box">
+				<article class="media">
+					<div class="media-content" ng-show="loading">
+						<loading></loading>
+					</div>
+					<div class="media-content" ng-show="!loading">
+						<div class="columns" ng-show="allQuizzes.length">
+							<div class="column is-5">
+								<p class="control has-icon">
+									<input type="text" class="input is-outlined is-info" ng-model="searchquiz.name" placeholder="ค้นหาแบบทดสอบ"><br/>
+									<i class="fa fa-search"></i>
+								</p>
+							</div>
+						</div>
+						<div class="notification is-danger" ng-show="!allQuizzes.length && !loading">
+								ไม่พบแบบทดสอบ
+						</div>
+						<div class="content" ng-repeat="subjects in allQuizzes">
+						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'-created_at'" ng-show="quiz.isAnswered">
+						 		<div class="columns">
+						 			<div class="column is-10">
+						 				<strong> <% quiz.name %> </strong>
+						 				<span class="tag is-info is-small">
+								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
+								 		</span>
+						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered"><i class="fa fa-check"></i> &nbsp; ทำแล้ว : <% quiz.points %>/<% quiz.quiz_q_a.length %> คะแนน</span>
+							 		</div>
+						 		</div>
+					 			<div class="columns">
+					 				<div class="column">
+					 						<ul>
+						 						<li>วิชา : <% subjects.name %></li>
+						 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>จำนวน : <% quiz.quiz_q_a.length %> ข้อ.</li>
+						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
+						 					</ul>
+						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
 						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
 						 					</a>
 								 	</div>
@@ -238,7 +290,7 @@
 								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
 								 		</span>
 						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
-						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered">ทำแล้ว</span>
+						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered"><i class="fa fa-check"></i> &nbsp; ทำแล้ว : <% quiz.points %>/<% quiz.quiz_q_a.length %> คะแนน</span>
 							 		</div>
 						 		</div>
 					 			<div class="columns">
@@ -247,6 +299,109 @@
 						 						<li>วิชา : <% subjects.name %></li>
 						 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
 						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>จำนวน : <% quiz.quiz_q_a.length %> ข้อ.</li>
+						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
+						 					</ul>
+						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
+						 					</a>
+								 	</div>
+					 			</div>
+						 	</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+		<!-- working quiz -->
+		<div class="tile is-parent" ng-show="panel.isSelected(6)">
+			<div class="tile is-child box">
+				<article class="media">
+					<div class="media-content" ng-show="loading">
+						<loading></loading>
+					</div>
+					<div class="media-content" ng-show="!loading">
+						<div class="columns" ng-show="allQuizzes.length">
+							<div class="column is-5">
+								<p class="control has-icon">
+									<input type="text" class="input is-outlined is-info" ng-model="searchquiz.name" placeholder="ค้นหาแบบทดสอบ"><br/>
+									<i class="fa fa-search"></i>
+								</p>
+							</div>
+						</div>
+						<div class="notification is-danger" ng-show="!allQuizzes.length && !loading">
+								ไม่พบแบบทดสอบ
+						</div>
+						<div class="content" ng-repeat="subjects in allQuizzes">
+						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'-created_at'" ng-show="panel.isActive(quiz.end)">
+						 		<div class="columns">
+						 			<div class="column is-10">
+						 				<strong> <% quiz.name %> </strong>
+						 				<span class="tag is-info is-small">
+								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
+								 		</span>
+						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered"><i class="fa fa-check"></i> &nbsp; ทำแล้ว : <% quiz.points %>/<% quiz.quiz_q_a.length %> คะแนน</span>
+							 		</div>
+						 		</div>
+					 			<div class="columns">
+					 				<div class="column">
+					 						<ul>
+						 						<li>วิชา : <% subjects.name %></li>
+						 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>จำนวน : <% quiz.quiz_q_a.length %> ข้อ.</li>
+						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
+						 					</ul>
+						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
+						 						<i class="fa fa-check"> ทำแบบทดสอบ</i>
+						 					</a>
+								 	</div>
+					 			</div>
+						 	</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+		<!-- ended quiz -->
+		<div class="tile is-parent" ng-show="panel.isSelected(7)">
+			<div class="tile is-child box">
+				<article class="media">
+					<div class="media-content" ng-show="loading">
+						<loading></loading>
+					</div>
+					<div class="media-content" ng-show="!loading">
+						<div class="columns" ng-show="allQuizzes.length">
+							<div class="column is-5">
+								<p class="control has-icon">
+									<input type="text" class="input is-outlined is-info" ng-model="searchquiz.name" placeholder="ค้นหาแบบทดสอบ"><br/>
+									<i class="fa fa-search"></i>
+								</p>
+							</div>
+						</div>
+						<div class="notification is-danger" ng-show="!allQuizzes.length && !loading">
+								ไม่พบแบบทดสอบ
+						</div>
+						<div class="content" ng-repeat="subjects in allQuizzes">
+						 	<div class="box" ng-repeat="quiz in subjects.quiz | filter:searchquiz:strict | orderBy:'-created_at'" ng-show="!panel.isActive(quiz.end)">
+						 		<div class="columns">
+						 			<div class="column is-10">
+						 				<strong> <% quiz.name %> </strong>
+						 				<span class="tag is-info is-small">
+								 			<i class="fa fa-star" ng-repeat="x in [] | range:quiz.level"></i>
+								 		</span>
+						 				<span class="tag is-small" ng-class="panel.compareFromNow(quiz.end,'>')?'is-danger':'is-success'"><%panel.compareFromNow(quiz.end,'>')?'สิ้นสุดแล้ว':'กำลังทำงาน'%></span>
+						 				<span class="tag is-small is-dark" ng-show="quiz.isAnswered"><i class="fa fa-check"></i> &nbsp; ทำแล้ว : <% quiz.points %>/<% quiz.quiz_q_a.length %> คะแนน</span>
+							 		</div>
+						 		</div>
+					 			<div class="columns">
+					 				<div class="column">
+					 						<ul>
+						 						<li>วิชา : <% subjects.name %></li>
+						 						<li>วันที่เริ่มต้น : <% panel.convertTime(quiz.start) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>วันที่สิ้นสุด : <% panel.convertTime(quiz.end) | date:'d MMMM y HH:mm น.' %></li>
+						 						<li>จำนวน : <% quiz.quiz_q_a.length %> ข้อ.</li>
 						 						<li>เวลา : <% quiz.quiz_time %> นาที.</li>
 						 					</ul>
 						 					<a class="button is-info is-outlined" ng-class="{'is-disabled':panel.compareFromNow(quiz.end,'>') || quiz.isAnswered }" href="{{url('/Student/answerQuiz')}}/<%quiz.id%>" target="_blank">
@@ -430,6 +585,12 @@
 						{
 							return date > time;
 						} 
+					}
+
+					this.isActive = function(end)
+					{
+						var date = new Date();
+						return date < this.convertTime(end);
 					}
 
 					this.convertTime = function(time)

@@ -138,9 +138,11 @@ class StudentController extends Controller
 				foreach ($quiz->Quiz as $key => $quizx) {
 					$quiz["quiz"] = $quizx->QuizQA;
 					$quizx["isAnswered"] = $quizx->Answer->contains(Auth::user()->id);
-					foreach ($quiz["quiz"] as $key => $question)
-					{
-						$quiz["quiz_q_a"] = $question->Choice;
+					foreach ($quizx->Answer as $key => $point) {
+						if($point->pivot->user_id == Auth::user()->id){
+							$quizx['points'] = $point->pivot->point;
+							break;
+						}
 					}
 
 				}
@@ -214,7 +216,7 @@ class StudentController extends Controller
 							{
 								if($answer["answer"] == $choice->id)
 								{
-									if($choice->isCorrect)
+									if($choice->isCorrect == 'true')
 									{
 										$points += 1;
 										break;
@@ -224,7 +226,6 @@ class StudentController extends Controller
 						}
 					}
 				}
-				
 				$time = ($quiz->quiz_time*60)-($data["minutes"]*60+$data["seconds"]);
 				$quiz->Answer()->attach(Auth::user()->id,['point'=>$points,'spendtime'=>$time]);
 				$caled_result = array();

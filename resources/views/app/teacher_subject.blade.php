@@ -59,21 +59,6 @@
 														</ul>
 												</li>
 										</ul>
-										<p class="menu-label">
-												จัดการ
-										</p>
-										<ul class="menu-list">
-												<li>
-													<a href="#" ng-click="panel.selectTab(7)" ng-class="{ 'is-active':panel.isSelected(7) }">
-														<i class="icon is-small fa fa-user-plus"></i> เพิ่มผู้เรียน
-														</a>
-												</li>
-												<li>
-													<a href="#" ng-click="panel.selectTab(8)" ng-class="{ 'is-active':panel.isSelected(8) }">
-														<i class="icon is-small fa fa-user-times"></i> ลบผู้เรียน
-													</a>
-												</li>
-										</ul>
 								</aside>
 						</div>
 				</div>
@@ -367,8 +352,16 @@
 							</div>
 						<div class="content" ng-show="subjects.length">
 							<div class="columns">
-								<div class="control column">
+								<div class="control column" ng-show="errmsg.length">
 									<div class="notification fade is-danger" ng-show="errmsg"><% errmsg %></div>
+								</div>
+								<div class="column" ng-show="post_datas.length">
+									<div class="notification fade is-primary" ng-show="notification">
+										 <button class="delete" ng-click="notification = false"></button>
+										 <p ng-repeat="message in post_datas">
+										 	 <% message.message %>
+										 </p>
+									</div>
 								</div>
 							</div>
 							<div class="columns">
@@ -447,12 +440,6 @@
 								</div>
 							</div>
 							<br/><br/>
-								<div class="notification fade is-primary" ng-show="notification" ng-if="post_datas.length">
-									 <button class="delete" ng-click="notification = false"></button>
-									 <p ng-repeat="message in post_datas">
-									 	 <% message.message %>
-									 </p>
-								</div>
 						</div>
 					</div>
 				</div>
@@ -929,16 +916,19 @@
 					$scope.subjectcount = {{ $subjectcount }};
 					$scope.quizcount = {{ $quizcount }};
 
-					$scope.quiz = [];
-					$scope.quiz.name = '';
-					$scope.quiz.subject_id;
-					$scope.quiz.time = 1;
-					$scope.quiz.level = 1;
-					$scope.quiz.start = new Date();
-					$scope.quiz.starttime = new Date(1970, 0, 1, 0, 0, 0);;
-					$scope.quiz.end = new Date();
-					$scope.quiz.endtime = new Date(1970, 0, 1, 0, 0, 0);
-					$scope.quiz.question = [];
+					this.prepareQuiz = function(){
+						$scope.quiz = [];
+						$scope.quiz.name = '';
+						$scope.quiz.subject_id = -1;
+						$scope.quiz.time = 1;
+						$scope.quiz.level = 1;
+						$scope.quiz.start = new Date();
+						$scope.quiz.starttime = new Date(1970, 0, 1, 0, 0, 0);;
+						$scope.quiz.end = new Date();
+						$scope.quiz.endtime = new Date(1970, 0, 1, 0, 0, 0);
+						$scope.quiz.question = [];
+					}
+					this.prepareQuiz();
 
 					//console.log($scope.quiz);
 
@@ -993,6 +983,8 @@
 							return $scope.errmsg = 'กรุณากรอกชื่อของแบบทดสอบ';
 						if($scope.quiz.question.length == 0)
 							return $scope.errmsg = 'กรุณาเพิ่มคำถาม';
+						if($scope.quiz.subject_id == -1)
+							return $scope.errmsg = "กรุณาเลือกวิชา";
 
 						$tmp.name = $scope.quiz.name;
 						$tmp.subject_id = $scope.quiz.subject_id;
@@ -1036,9 +1028,10 @@
 						}
 
 						$scope.quiz = $tmp;
-						//console.log($scope.quiz);
 					  this.postData(url,$scope.quiz);
-						
+					  this.prepareQuiz();
+						console.log($scope.quiz);
+
 					}
 
 				});

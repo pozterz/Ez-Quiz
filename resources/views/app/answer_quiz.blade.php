@@ -38,7 +38,7 @@
 							</div>
 							<div class="columns">
 								<div class="column">
-									<button type="button" class="button is-info is-outlined" ng-class="{ 'is-disabled':start }" ng-click="start = 1; startTimer();" ng-hide="result.length">
+									<button type="button" class="button is-info is-outlined" ng-class="{ 'is-disabled':start }" ng-click="start = 1; startTimer();" ng-hide="result.result.length">
 										<i class="fa fa-check"></i> &nbsp; เริ่มทำแบบทดสอบ
 									</button>
 								</div>
@@ -168,24 +168,26 @@
     });
 
     var sendData = function(time,apply){
-    	$scope.loading = true;
-    	$scope.start = false;
-    	answer.minutes = time.minutes;
-			answer.seconds = time.seconds;
-    	console.log(answer);
-    	var url = "sendAnswer";
-    	$http.post("{{ url('/Student') }}"+'/'+url,{data : answer,csrf_token: CSRF_TOKEN})
-				.then(function(response)
-				{
-    				$scope.loading = false;
+    	if(confirm('ยืนยันการส่งคำตอบ ?')){
+	    	$scope.loading = true;
+	    	$scope.start = false;
+	    	answer.minutes = time.minutes;
+				answer.seconds = time.seconds;
+	    	//console.log(answer);
+	    	var url = "sendAnswer";
+	    	$http.post("{{ url('/Student') }}"+'/'+url,{data : answer,csrf_token: CSRF_TOKEN})
+					.then(function(response)
+					{
+	    				$scope.loading = false;
 						$scope.result = response.data;
-						console.log($scope.result);
-				});
+						//console.log($scope.result);
+					});
 
-    	if(apply)
-    		return $scope.$apply();
+	    	if(apply)
+	    		return $scope.$apply();
 
-    	console.log(answer);
+	    	//console.log(answer);
+    	}
     }
 
     var answer = {};
