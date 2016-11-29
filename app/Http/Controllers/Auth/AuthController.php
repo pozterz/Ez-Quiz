@@ -68,7 +68,7 @@ class AuthController extends Controller
             'student_id.min' => 'รหัสนักศึกษา จะต้องกรอกอย่างน้อย 4 ตัวอักษร',
             'student_id.max' => 'รหัสนักศึกษา จะสามารถกรอกได้ทั้งหมด 10 ตัวอักษร',
             'student_id.regex' => 'รหัสนักศึกษา จะต้องกรอกเป็นตัวเลขเท่านั้น',
-            'student_id.unique' => 'รหัสนักศึกษา นี้มีผู้ใช้แล้ว',
+            'student_id.unique' => 'รหัสนักศึกษานี้มีผู้ใช้แล้ว',
         ];
         return Validator::make($data, [
             'username' => 'required|min:6|max:30|unique:users',
@@ -76,7 +76,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|different:username|confirmed|min:6|max:200',
             'type' => 'required|in:student,teacher',
-            'student_id' => 'regex:/\d/|min:4|max:10',
+            'student_id' => 'regex:/\d/|min:4|max:10|unique:users',
             'ip' => 'ip',
         ],$message);
     }

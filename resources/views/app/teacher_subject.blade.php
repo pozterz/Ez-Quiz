@@ -207,13 +207,21 @@
 												<table class="table">
 													<thead ng-hide="!subjectData[0].member.length">
 														<tr>
-															<th>รหัศนักศึกษา</th>
-															<th>ชื่อ</th>
+															<th ng-click="panel.sortBy('$index')">
+																# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('student_id')">รหัศนักศึกษา
+																<i class="fa fa-sort" ng-show="sort === 'student_id'" ng-class="{reverse: reverse}"></i>
+															</th>
+															<th ng-click="panel.sortBy('name')">ชื่อ
+																<i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}"></i>
+															</th>
 															<th>ลบออกจากวิชา</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr ng-repeat="member in subjectData[0].member">
+														<tr ng-repeat="member in subjectData[0].member | orderBy:sort:reverse">
+															<td><% $index+1 %></td>
 															<td><% member.student_id %></td>
 															<td><% member.name %></td>
 															<td>
@@ -289,14 +297,26 @@
 												      <table class="table" ng-show="subjectData[0].quiz[answer_index].answer.length">
 												      	<thead>
 												      		<tr>
-												      			<th>รหัสนักศึกษา</th>
-												      			<th>ชื่อ</th>
-												      			<th>คะแนน</th>
-												      			<th>เวลา</th>
+												      			<th ng-click="panel.sortBy('$index')">
+																			# <i class="fa fa-sort" ng-show="sort === '$index'" ng-class="{reverse: reverse}"></i>
+																		</th>
+												      			<th ng-click="panel.sortBy('student_id')">รหัสนักศึกษา
+												      				<i class="fa fa-sort" ng-show="sort === 'student_id'" ng-class="{reverse: reverse}">
+												      			</th>
+												      			<th ng-click="panel.sortBy('name')">ชื่อ
+																			<i class="fa fa-sort" ng-show="sort === 'name'" ng-class="{reverse: reverse}">
+												      			</th>
+												      			<th ng-click="panel.sortBy('point')">คะแนน
+																			<i class="fa fa-sort" ng-show="sort === 'point'" ng-class="{reverse: reverse}">
+												      			</th>
+												      			<th ng-click="panel.sortBy('spendtime')">เวลา
+																			<i class="fa fa-sort" ng-show="sort === 'spendtime'" ng-class="{reverse: reverse}">
+												      			</th>
 												      		</tr>
 												      	</thead>
 												      	<tbody>
-												      		<tr ng-repeat="Answer in subjectData[0].quiz[answer_index].answer">
+												      		<tr ng-repeat="Answer in subjectData[0].quiz[answer_index].answer | orderBy:sort:reverse">
+												      			<td><% $index+1 %></td>
 												      			<td><% Answer.student_id %></td>
 												      			<td><% Answer.name %></td>
 												      			<td><% Answer.pivot.point %></td>
@@ -533,7 +553,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse" ng-show="panel.isActive(quiz.end)">
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
@@ -589,7 +609,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse">
+													<tr ng-repeat="quiz in quizzes | filter:search:strict | orderBy:sort:reverse" ng-show="!panel.isActive(quiz.end)">
 														<td><% $index+1 %></td>
 														<td><% quiz.name  %></td>
 														<td><% quiz.subject.subject_number %> : <% quiz.subject.name  %></td>
@@ -840,6 +860,12 @@
 					{
 						$scope.reverse = ($scope.sort === propertie) ? !$scope.reverse : false;
 						$scope.sort = propertie;
+					}
+
+					this.isActive = function(end)
+					{
+						var date = new Date();
+						return date < this.convertTime(end);
 					}
 
 					this.convertTime = function(time)
