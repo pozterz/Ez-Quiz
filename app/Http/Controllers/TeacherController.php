@@ -102,10 +102,17 @@ class TeacherController extends Controller
 	       }
 	      }
 	      $subject[0]->Member;
+	      $type = "success";
+      }
+      else
+      {
+      	$subject = 'ไม่พบวิชานี้ในระบบ';
+      	$type = "failed";
       }
       return response()
             ->json([
               'result' => $subject,
+              'type' => $type
               ]);
     }
 
@@ -189,6 +196,32 @@ class TeacherController extends Controller
 		
 
 		array_push($result, $message);
+		return response()
+            ->json([
+              'result' => $result,
+              ]);
+	}
+
+	public function removeMember(Request $request){
+		$message = array('type'=> 'failed','message'=>'');
+		$result = array();
+		$subject = Subject::find($request->get('data')['subject_id']);
+		$user = Subject::find($request->get('data')['subject_id'])->User;
+
+		if($user['id'] == Auth::user()->id)
+		{
+			if($subject->Member()->detach($request->get('data')['user_id'])){
+				$message['type'] = 'success';
+				$message['message'] = 'สำเร็จ';
+			}
+			
+		}
+		else
+		{
+			$message['message'] = 'คุณไมไ่ด้เป็นเจ้าของวิชานี้';
+		}
+
+		array_push($result,$message);
 		return response()
             ->json([
               'result' => $result,

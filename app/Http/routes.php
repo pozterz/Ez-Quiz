@@ -30,7 +30,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::auth();
 	Route::get('/', 'AppController@index');
 	Route::get('/index', 'AppController@index');
-	Route::get('/test', 'AppController@index2');
+	Route::get('/profile', 'AppController@profile');
+	Route::get('/getProfile', 'AppController@getProfile');
 	Route::get('/getSubjects', 'AppController@getSubjects');
 	Route::get('/getSubject/{subject_id}', 'AppController@getSubject');
 	Route::get('/getSubjectQuizzes/{id}', 'AppController@getSubjectQuizzes');
@@ -50,6 +51,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post('/Teacher/newQuizzes', 'TeacherController@newQuizzes');
 	Route::get('/Teacher/getActiveQuizzes', 'TeacherController@getActiveQuizzes');
 	Route::get('/Teacher/getInActiveQuizzes', 'TeacherController@getInActiveQuizzes');
+	Route::post('/Teacher/removeMember','TeacherController@removeMember');
 	Route::post('/Teacher/editSubject','TeacherController@editSubject');
 	Route::post('/Teacher/deleteSubject','TeacherController@deleteSubject');
 

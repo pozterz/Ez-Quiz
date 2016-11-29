@@ -26,6 +26,18 @@ class AppController extends Controller
     	return view('index',compact('quizzes','subjects','users','answer'));
     }
 
+    public function profile(){
+      return view('profile');
+    }
+
+    public function getProfile(){
+      $user = Auth::user();
+      return response()
+            ->json([
+              'result' => $user,
+              ]);
+    }
+
     /**
      * get all subjects
      * @return [json Array] [array(id,name,user_id,subject_number,timestamp)]

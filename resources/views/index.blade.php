@@ -16,7 +16,7 @@
 						<div class="tile is-vertical is-12">
 								<loading></loading>
 								<div class="notification fade is-danger" ng-show="!quizzes.length && !loading">
-									ไม่พบคำถามในฐานข้อมูล
+									ไม่พบคำถามที่กำลังทำงานอยู่
 								</div>
 								<nav class="level">
 								  <div class="level-item has-text-centered">
@@ -68,7 +68,9 @@
 																				<i class="fa fa-edit fa-2x"></i>  &nbsp; ทำแบบทดสอบ
 																			</a> 
 																		@else
-																			<a href="#" alt="ข้อมูลวิชา"><i class="fa fa-info-circle icon is-medium"></i></a>
+																			<a class="button is-outlined" ng-class="QuizCtrl.diffcolor(quiz.level)" alt="ทำแบบทดสอบ" ng-show="QuizCtrl.isOwn(quiz.subject.user_id)" href="{{url('/Teacher/Subject?subject=')}}<%quiz.subject.id%>" target="_blank">
+																				<i class="fa fa-info-circle fa-2x"></i>  &nbsp; ข้อมูลวิชา
+																			</a> 
 																		@endif
 																</p>
 														</article>
@@ -141,6 +143,14 @@
 										break;
 						}
 				}
+				@if(!Auth::guest())
+				this.isOwn = function(quizid)
+				{
+
+					var userid = {{ Auth::user()->id }}
+					return userid === quizid;
+				}
+				@endif
 
 				this.convertTime = function(time) {
 						var date = new Date(time);
@@ -159,6 +169,7 @@
 								.then(function(response) {
 										$scope.loading = false;
 										$scope.quizzes = response.data.result;
+										console.log($scope.quizzes)
 								});
 				}
 
