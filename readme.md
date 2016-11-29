@@ -50,6 +50,7 @@ And of course Ez - Quiz itself is open source with a [public repository][ezquiz]
 Ez-Quiz requires [Laravel](https://laravel.com/docs/5.2/) v5.2+ to run.
 
 Install with composer.
+
 สามารถใช้ composer ในการติดตั้ง.
 
 ```sh
@@ -60,8 +61,11 @@ For production environments.
 ตั้งค่า environment สำหรับ production.
 
 > rename .env.example to .env and edit.
-> เปลี่ยนชื่อไฟล์ .env.example เป็น .env และแก้ไข.
+
 > .env will protected with .htaccess.
+
+> เปลี่ยนชื่อไฟล์ .env.example เป็น .env และแก้ไข.
+
 > .env จะถูกปกป้องด้วย .htaccess.
 
 ```sh
@@ -74,6 +78,7 @@ DB_PASSWORD = [YOUR Database password]
 ```
 
 deploy key & database.
+
 การสร้างคีย์และตารางในฐานข้อมูล.
 ```sh
 php artisan key:generate
