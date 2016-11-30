@@ -4,6 +4,8 @@ Ez - Quiz is a online quiz system for student and lecturer and its our group wor
 
 Ez - Quiz เป็นระบบทำควิซออนไลน์สำหรับนักเรียนและอาจารย์ และยังเป็นส่วนหนึ่งในวิชา Web Engineering & Application.
 
+สามารถดูตัวอย่างเว็บไซต์จริงได้ที่นี่ : [DEMO](http://symple.world/ezquiz/public)
+
 ### Member
 
 |  ชือ   | รหัสนักศึกษา   	|    ตำแหน่ง   |
@@ -79,7 +81,8 @@ DB_PASSWORD = [YOUR Database password]
 
 deploy key & database.
 
-การสร้างคีย์และตารางในฐานข้อมูล.
+และสร้างคีย์และตารางในฐานข้อมูล.
+
 ```sh
 php artisan key:generate
 php artisan migrate
