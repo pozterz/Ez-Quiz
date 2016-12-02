@@ -1,21 +1,37 @@
-  @font-face {
+   @font-face {
  font-family: 'Prompt';
  font-style: normal;
  font-weight: 300;
  src: local('Prompt Light'), local('Prompt-Light'), url(http://localhost/webapp/public/Prompt.ttf) format('truetype');
-} 
+}  
 
-/*   @font-face {
+/* @font-face {
  font-family: 'Prompt';
  font-style: normal;
  font-weight: 300;
  src: local('Prompt Light'), local('Prompt-Light'), url(http://symple.world/ezquiz/public/Prompt.ttf) format('truetype');
-}   */
+} */
 
 html,body {
     background: #fff;
     height: 100%;
     font-family: 'Prompt', sans-serif !important;
+}
+.fade{
+  transition:0.5s linear all;
+  opacity: 1;
+}
+
+.fade.ng-hide {
+  opacity:0;
+}
+
+.level:not(:last-child){
+  margin-bottom: 0px;
+}
+
+.table tbody tr:last-child td,.table tbody tr:last-child th{
+  border-bottom-width: 1px;
 }
 
 .is-teal {
@@ -54,13 +70,69 @@ th:hover{
     max-height: 128px;
     border-radius: 50%;
 }
-button,select{
+
+button,select,input{
 	font-family: inherit;
 }
 
+.hero.is-primary .tabs ul li .is-active{
+  color:#00d1b2;
+}
+
+.hero.is-primary .tabs a{
+  color:black;
+}
 .hovereffect{ transition: all .2s ease-in-out; }
 .hovereffect:hover { transform: scale(1.05); } 
 .hovereffect a{ color:inherit; }
+
+input[type="radio"]{
+  display: none;
+}
+.choices {
+  margin-bottom: 10px;
+}
+/* Radio buttons */
+.choices label {
+  position: relative;
+}
+.choices span::before,
+.choices span::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.choices span.radio:hover {
+  cursor: pointer;
+}
+.choices span.radio::before {
+  width: 27px;
+  height: 27px;
+  background-color: #fff;
+  left: -35px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 3px solid transparent;
+  transition: border-color .2s;
+}
+.choices span.radio:hover::before {
+  border: 3px solid #F0FF76;
+}
+.choices span.radio::after {
+  content: '\f00c';
+  font-size: 1.3em;
+  font-family: 'FontAwesome';
+  left: -31px;
+  top: 2px;
+  color: transparent;
+  transition: color .2s;
+}
+input[type="radio"]:checked + label span.radio::after {
+  color: #62AFFF;
+}
 
 
 @media screen and (max-width: 473px) {

@@ -30,27 +30,40 @@ Route::group(['middleware' => ['web']], function () {
 	Route::auth();
 	Route::get('/', 'AppController@index');
 	Route::get('/index', 'AppController@index');
-	Route::get('/test', 'AppController@index2');
+	Route::get('/profile', 'AppController@profile');
+	Route::get('/getProfile', 'AppController@getProfile');
 	Route::get('/getSubjects', 'AppController@getSubjects');
-	Route::get('/getSubject/{$subject_id}', 'AppController@getSubject');
-	Route::get('/getSubjectQuiz/{$subject_id}', 'AppController@getSubjectQuiz');
+	Route::get('/getSubject/{subject_id}', 'AppController@getSubject');
+	Route::get('/getSubjectQuizzes/{id}', 'AppController@getSubjectQuizzes');
 	Route::get('/getQuizzes', 'AppController@getQuizzes');
 	Route::get('/getActiveQuizzes', 'AppController@getActiveQuizzes');
 	Route::get('/getInActiveQuizzes', 'AppController@getInActiveQuizzes');
-	Route::get('/getQuiz/{$subject_id}', 'AppController@getQuiz');
+	Route::get('/getQuiz/{id}', 'AppController@getQuiz');
 
 	// teacher route
 	Route::get('/Teacher/Subject','TeacherController@Subject');
 	Route::get('/Teacher/getSubjects', 'TeacherController@getSubjects');
+	Route::get('/Teacher/getSubjectData/{id}', 'TeacherController@getSubjectData');
 	Route::get('/Teacher/getSubjectCount', 'TeacherController@getSubjectCount');
 	Route::get('/Teacher/addSubject', 'TeacherController@addSubject');
 	Route::post('/Teacher/newSubject', 'TeacherController@newSubject');
 	Route::get('/Teacher/getQuizzes', 'TeacherController@getQuizzes');
+	Route::post('/Teacher/newQuizzes', 'TeacherController@newQuizzes');
 	Route::get('/Teacher/getActiveQuizzes', 'TeacherController@getActiveQuizzes');
 	Route::get('/Teacher/getInActiveQuizzes', 'TeacherController@getInActiveQuizzes');
+	Route::post('/Teacher/removeMember','TeacherController@removeMember');
+	Route::post('/Teacher/editSubject','TeacherController@editSubject');
+	Route::post('/Teacher/deleteSubject','TeacherController@deleteSubject');
 
 	// student route
 	Route::get('/Student/Subject','StudentController@Subject');
-
+	Route::get('/Student/getSubjects', 'StudentController@getSubjects');
+	Route::get('/Student/addSubject', 'StudentController@addSubject');
+	Route::post('/Student/registerSubject', 'StudentController@registerSubject');
+	Route::post('/Student/removeSubject', 'StudentController@removeSubject');
+	Route::get('/Student/getRegisteredSubjects', 'StudentController@getRegisteredSubjects');
+	Route::get('/Student/getRegisteredSubjectsQuizzes', 'StudentController@getRegisteredSubjectsQuizzes');
+	Route::get('/Student/answerQuiz/{id}','StudentController@answerQuiz');
+	Route::post('/Student/sendAnswer', 'StudentController@sendAnswer');
 });
 

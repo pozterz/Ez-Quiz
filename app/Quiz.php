@@ -12,9 +12,9 @@ class Quiz extends Model
         return $this->BelongsTo(Subject::class);
     }
 
-    public function QuizAnswer()
+    public function Answer()
     {
-        return $this->hasMany(QuizAnswer::class);
+        return $this->BelongsToMany(User::class)->withPivot('point','spendtime');
     }
 
     public function QuizQA()

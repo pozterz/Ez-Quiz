@@ -49,7 +49,7 @@
 						 <i class="fa fa-bars"></i> &nbsp; วิชาทั้งหมด
 						</a>
 						<a class="nav-item is-tab {{ Request::is('Student/addSubject')?'is-active':'' }}" href="{{ url('/Student/addSubject') }}">
-						 <i class="fa fa-plus"></i> &nbsp; เพิ่มวิชา
+						 <i class="fa fa-search"></i> &nbsp; ลงทะเบียนวิชา
 						</a>
 						@else
 						<a class="nav-item is-tab {{ Request::is('Teacher/Subject')?'is-active':'' }}" href="{{ url('/Teacher/Subject') }}">
@@ -60,7 +60,7 @@
 						</a>
 						@endif
 					
-					<a class="nav-item is-tab {{ Request::is('Profile')?'is-active':'' }}">
+					<a class="nav-item is-tab {{ Request::is('Profile')?'is-active':'' }}" href="{{ url('/profile') }}">
 						 <i class="fa fa-user"></i> &nbsp; ข้อมูลส่วนตัว
 					</a>
 					<a class="nav-item is-tab" href="{{ url('/logout') }}">

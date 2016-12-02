@@ -16,8 +16,7 @@ class QuizQA extends Migration
             $table->increments('id');
             $table->integer('quiz_id')->unsigned()->index();
             $table->string('question',500);
-            $table->string('wrong_answer',500);
-            $table->string('answer',50);
+            $table->timestamps();
         });
 
         Schema::table('quiz_qas',function(Blueprint $table){

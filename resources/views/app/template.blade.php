@@ -17,6 +17,7 @@
     </div>
   </section>
   @include('footer')
+  
   @yield('js')
 </body>
 </html>
